@@ -2,7 +2,7 @@
 
 ## Rails
 ### Models
-* Activity.matches
+* Activity (w/ matches association)
 * Match (w/ match percentage method)
 
 ### Controllers

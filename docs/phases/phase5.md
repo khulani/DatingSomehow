@@ -2,7 +2,7 @@
 
 ## Rails
 ### Models
-* Matches (add functionality for voting)
+* Matches (w/ voting functionality)
 
 ### Controllers
 
@@ -10,12 +10,12 @@
 
 ## Backbone
 ### Models
-* Matches (with vote counts)
+* Matches (w/ vote counts)
 
 ### Collections
 
 
 ### Views
-* MatchIndex (for popular and highest matches)
+* MatchIndex (w/ popular and highest matches)
 
 ## Gems/Libraries

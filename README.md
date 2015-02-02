@@ -10,7 +10,7 @@ Users can log a series of activity occurrences and find ‘possible’ explanati
 or causes for those activities...
 
 - [x] Create accounts and sessions for logging In/out
-- [x] Create ‘Activity Timelines’ (blogs)
+- [x] Create ‘Activity Timelines’
 - [x] Create ‘Activity Occurences’
 - [x] Find ‘Timeline Matches’
 - [x] Create ‘Comments’ for ’Timeline Matches’
@@ -52,7 +52,7 @@ comparisons.
 [Details][phase-three]
 
 ### Phase 4: Occurrence UI (~1-2 days)
-I expand the UI functionality to allow creating new 'occurrences' by dragging to
+I will expand the UI functionality to allow creating new 'occurrences' by dragging to
 the timeline or clicking on the timeline. I will make 'occurrences' on the
 timeline open and close able.
 
