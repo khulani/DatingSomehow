@@ -27,7 +27,7 @@ or causes for those activities...
 
 ## Implementation Timeline
 
-### Phase 1: User Authentication, Basic Blogs and Posts (~1 day)
+### Phase 1: User Authentication, Activities and Occurrences (~1 day)
 I will implement user authentication in Rails based on the practices learned at
 App Academy. By the end of this phase, users will be able to create Activities and
 Entries using simple text forms in Rails views. The most important part of this
