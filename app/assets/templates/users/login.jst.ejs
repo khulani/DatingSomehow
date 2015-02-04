@@ -1,0 +1,14 @@
+<% if (user && user.id) { %>
+  <%= user.escape('email') %> logged in! |
+  <button id='signout'>Sign Out!</button>
+<% } else { %>
+  <form>
+    Email: <input type="email" name="email" value="">
+    Password: <input type="password" name="password" value="">
+    <input type="submit" value="Sign in!">
+  </form>
+  <% errors.forEach(function (error) { %>
+    <%= error %>
+  <% }); %>
+  | <a href="#/user/new">Sign Up!</a>
+<% } %>
