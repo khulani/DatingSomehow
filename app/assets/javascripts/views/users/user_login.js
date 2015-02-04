@@ -25,7 +25,7 @@ ActoExplaino.Views.UserLogin = Backbone.View.extend({
       error: function (errors) {
         that.render(errors.responseJSON['errors']);
       }
-    })
+    });
   },
 
   signOut: function (event) {

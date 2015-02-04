@@ -16,6 +16,12 @@ ActoExplaino.Routers.Router = Backbone.Router.extend({
       model: ActoExplaino.user
     });
     this.$login.html(this._topView.render().$el);
+
+    this._sideView && this._sideView.remove();
+    this._sideView = new ActoExplaino.Views.ActivityIndex({
+      model: ActoExplaino.user
+    });
+    this.$side.html(this._sideView.render().$el);
   },
 
   _swapView: function (view) {
