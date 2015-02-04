@@ -1,0 +1,14 @@
+<% if (user.id) { %>
+  Your Activites:
+  <form>
+    <input type="text" name="title" value="" placeholder="Enter title...">
+    <input type="submit" name="some_name" value="Add Activity">
+  </form>
+  <% errors.forEach(function (error) { %>
+    <%= error %>
+  <% }) %>
+  <ul class='activities'></ul>
+<% } else { %>
+  Popular Matches:
+  <ul class='matches'></ul>
+<% } %>

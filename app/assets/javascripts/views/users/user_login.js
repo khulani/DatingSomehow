@@ -2,7 +2,7 @@ ActoExplaino.Views.UserLogin = Backbone.View.extend({
   template: JST['users/login'],
 
   initialize: function () {
-    this.listenTo(this.model, 'sync', this.render);
+    this.listenTo(this.model, 'sync change', this.render);
   },
 
   events: {
@@ -15,12 +15,11 @@ ActoExplaino.Views.UserLogin = Backbone.View.extend({
     event.preventDefault();
     var loginData = $(event.currentTarget).serializeJSON();
     $.ajax({
-      url: 'session',
+      url: 'api/session',
       type: 'POST',
       data: loginData,
       success: function (user) {
-        that.model = new ActoExplaino.Models.User(user);
-        that.render();
+        that.model.fetch();
       },
       error: function (errors) {
         that.render(errors.responseJSON['errors']);
@@ -31,11 +30,11 @@ ActoExplaino.Views.UserLogin = Backbone.View.extend({
   signOut: function (event) {
     var that = this;
     $.ajax({
-      url: 'session',
+      url: 'api/session',
       type: 'DELETE',
-      success: function (user) {
-        that.model = user;
-        that.render();
+      success: function () {
+        debugger;
+        that.model.fetch();
       }
     });
   },
@@ -46,7 +45,6 @@ ActoExplaino.Views.UserLogin = Backbone.View.extend({
     }
     var content = this.template({ user: this.model, errors: errors });
     this.$el.html(content);
-
     return this;
   }
 });

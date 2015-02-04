@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   root to: 'root#root'
 
-  resource :user, only: [:create, :show], defaults: { format: :json }
-  resource :session, only: [:create, :destroy], defaults: { format: :json }
+  namespace :api, defaults: { format: :json } do
+    resource :user, only: [:create, :show]
+    resource :session, only: [:create, :destroy]
+    resources :activities, only: [:create, :destroy]
+  end
 end

@@ -1,3 +1,3 @@
 ActoExplaino.Models.Activity = Backbone.Model.extend({
-  urlRoot: '/activities'
+  urlRoot: 'api/activities'
 });

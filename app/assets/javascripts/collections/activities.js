@@ -1,5 +1,5 @@
 ActoExplaino.Collections.Activities = Backbone.Collection.extend({
-  url: '/activites',
+  url: 'api/activites',
 
   model: ActoExplaino.Models.Activity
 });
