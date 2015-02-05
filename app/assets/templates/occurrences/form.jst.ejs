@@ -1,0 +1,12 @@
+<form id="update">
+  <input type="hidden" name="activity_id"
+         value="<%= occurrence.escape('activity_id') %>">
+  <textarea name="occurrence[body]" placeholder="Enter description..."
+    ><%= occurrence.escape('body') %></textarea><br>
+  <input type="date" name="occurrence[date]"
+         value="<%= occurrence.escape('date') %>"><br>
+  <input type="text" name="occurrence[image]"
+         value="<%= occurrence.escape('image') %>"><br>
+  <input type="submit" value="Update Occurrence">
+</form>
+<div class='errors'></div>

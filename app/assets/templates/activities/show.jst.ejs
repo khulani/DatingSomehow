@@ -1,0 +1,11 @@
+<h3><%= activity.escape('title') %></h3>
+<form id='add'>
+  <input type="hidden" name="activity_id" value="<%= activity.id %>">
+  <textarea name="occurrence[body]" placeholder="Enter description..."></textarea><br>
+  <input type="date" name="occurrence[date]" value=""><br>
+  <input type="text" name="occurrence[image]" value=""><br>
+  <input type="submit" value="Add Occurrence">
+</form>
+<div class='errors'></div>
+<br>
+<div class='occurrences'></div>

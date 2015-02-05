@@ -1,5 +1,6 @@
 ActoExplaino.Views.UserLogin = Backbone.View.extend({
   template: JST['users/login'],
+  formTemplate: JST['users/form'],
 
   initialize: function () {
     this.listenTo(this.model, 'sync change', this.render);
@@ -7,7 +8,19 @@ ActoExplaino.Views.UserLogin = Backbone.View.extend({
 
   events: {
     'submit form': 'signIn',
-    'click #signout': 'signOut'
+    'click #signout': 'signOut',
+    'click #signup': 'signUp'
+  },
+
+  createUser: function () {
+
+  },
+
+  signUp: function (user) {
+    if (!user.get('email')) {
+      user = { email: '' };
+    }
+    var content = this.formTemplate({user: user});
   },
 
   signIn: function (event) {
@@ -19,7 +32,8 @@ ActoExplaino.Views.UserLogin = Backbone.View.extend({
       type: 'POST',
       data: loginData,
       success: function (user) {
-        that.model.fetch();
+        that.model.set(user);
+        that.model.activities().set(user.activities);
       },
       error: function (errors) {
         that.render(errors.responseJSON['errors']);
@@ -33,8 +47,7 @@ ActoExplaino.Views.UserLogin = Backbone.View.extend({
       url: 'api/session',
       type: 'DELETE',
       success: function () {
-        debugger;
-        that.model.fetch();
+        that.model.clear();
       }
     });
   },
