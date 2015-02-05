@@ -2,13 +2,11 @@
   <%= user.escape('email') %> logged in! |
   <button id='signout'>Sign Out!</button>
 <% } else { %>
-  <form>
+  <form id='signin'>
     Email: <input type="email" name="email" value="">
     Password: <input type="password" name="password" value="">
     <input type="submit" value="Sign in!">
   </form>
-  <% errors.forEach(function (error) { %>
-    <%= error %>
-  <% }); %>
-  | <button id='signup'>Sign Up!</button><div id='signupform'></div>
+  <div class='inerrors'></div>
+  | <button id='signupbutton'>Sign Up!</button><div id='signupform'></div>
 <% } %>

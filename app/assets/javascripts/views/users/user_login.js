@@ -1,32 +1,45 @@
 ActoExplaino.Views.UserLogin = Backbone.View.extend({
   template: JST['users/login'],
   formTemplate: JST['users/form'],
+  errTemplate: JST['shared/errors'],
 
   initialize: function () {
     this.listenTo(this.model, 'sync change', this.render);
   },
 
   events: {
-    'submit form': 'signIn',
+    'submit #signin': 'signIn',
     'click #signout': 'signOut',
-    'click #signup': 'signUp'
+    'click #signupbutton': 'signUp',
+    'submit form#signup': 'createUser'
   },
 
   createUser: function () {
-
+    var that = this;
+    event.preventDefault();
+    var formData = $(event.target).serializeJSON();
+    var user = new ActoExplaino.Models.User(formData);
+    user.save({}, {
+      success: function () {
+        that.$el.find('#signupform').empty();
+        that.model.set(user.attributes);
+        that.model.activities().set([]);
+      },
+      error: function (obj, errors) {
+        that.renderErrors(errors.responseJSON['errors'], '.uperrors');
+      }
+    });
   },
 
-  signUp: function (user) {
-    if (!user.get('email')) {
-      user = { email: '' };
-    }
-    var content = this.formTemplate({user: user});
+  signUp: function () {
+    var content = this.formTemplate();
+    this.$el.find('#signupform').html(content);
   },
 
   signIn: function (event) {
     var that = this;
     event.preventDefault();
-    var loginData = $(event.currentTarget).serializeJSON();
+    var loginData = $(event.target).serializeJSON();
     $.ajax({
       url: 'api/session',
       type: 'POST',
@@ -36,7 +49,7 @@ ActoExplaino.Views.UserLogin = Backbone.View.extend({
         that.model.activities().set(user.activities);
       },
       error: function (errors) {
-        that.render(errors.responseJSON['errors']);
+        that.renderErrors(errors.responseJSON['errors'], '.inerrors');
       }
     });
   },
@@ -52,12 +65,14 @@ ActoExplaino.Views.UserLogin = Backbone.View.extend({
     });
   },
 
-  render: function (errors) {
-    if (!Array.isArray(errors)) {
-      (errors = []);
-    }
-    var content = this.template({ user: this.model, errors: errors });
+  render: function () {
+    var content = this.template({ user: this.model });
     this.$el.html(content);
     return this;
+  },
+
+  renderErrors: function (errors, finding) {
+    var content = this.errTemplate({ errors: errors });
+    this.$el.find(finding).html(content);
   }
 });

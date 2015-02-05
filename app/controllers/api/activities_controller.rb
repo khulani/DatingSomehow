@@ -12,7 +12,7 @@ class Api::ActivitiesController < ApplicationController
   end
 
   def show
-    @activity = Activity.find(params[:id])
+    @activity = current_user.activities.find(params[:id])
     render :show
   end
 
