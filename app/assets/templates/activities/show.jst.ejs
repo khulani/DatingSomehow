@@ -1,11 +1,17 @@
-<h3><%= activity.escape('title') %></h3>
-<form id='add'>
-  <input type="hidden" name="activity_id" value="<%= activity.id %>">
-  <textarea name="occurrence[body]" placeholder="Enter description..."></textarea><br>
-  <input type="date" name="occurrence[date]" value=""><br>
-  <input type="text" name="occurrence[image]" value="" placeholder="Enter picture..."><br>
-  <input type="submit" value="Add Occurrence">
-</form>
-<div class='errors'></div>
-<br>
-<div class='occurrences'></div>
+<div id='activity-show' class='section'>
+  <h3><%= activity.escape('title') %></h3>
+  <form id='add'>
+    <input type="hidden" name="activity_id" value="<%= activity.id %>">
+    <textarea name="occurrence[body]" placeholder="Enter description..."></textarea><br>
+    <input type="date" name="occurrence[date]" value=""><br>
+    <input type="text" name="occurrence[image]" value="" placeholder="Enter picture..."><br>
+    <input type="submit" value="Add Occurrence">
+  </form>
+  <div class='errors'></div>
+  <br>
+  <div class='occurrences'></div>
+</div>
+<div id='match-show' class='section'></div>
+<div class='section'>
+  <ul id='match-list'></ul>
+</div>

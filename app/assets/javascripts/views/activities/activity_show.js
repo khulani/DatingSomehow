@@ -1,6 +1,7 @@
 ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
   template: JST['activities/show'],
   errTemplate: JST['shared/errors'],
+  matchTemplate: JST['matches/matches'],
 
   initialize: function(options){
     this.user = options.user;
@@ -17,7 +18,8 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
   },
 
   events: {
-    'submit #add': 'createOccurrence'
+    'submit #add': 'createOccurrence',
+    'click #match': 'matchShow'
   },
 
   checkUser: function () {
@@ -61,10 +63,34 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this.removeSubview('.occurrences', occurrenceView);
   },
 
+  matchList: function() {
+    var matches = this.model.get('matches')
+    if (matches) {
+      var content = this.matchTemplate({ matches: matches });
+      this.$('#match-list').append(content);
+    }
+  },
+
+  matchShow: function (event) {
+    this._currentMatch && this._currentMatch.remove();
+    event.preventDefault();
+    var id = $(event.currentTarget).data('id');
+    var title = $(event.currentTarget).data('title');
+    var matchActivity = new ActoExplaino.Models.Activity({ id: id });
+    matchActivity.fetch();
+    var matchShowView = new ActoExplaino.Views.MatchShow({
+      model: matchActivity,
+      title: title
+    });
+    this.addSubview('#match-show', matchShowView);
+    this._currentMatch = matchShowView;
+  },
+
   render: function () {
     if (this.user.id) {
-      var content = this.template({ activity: this.model});
+      var content = this.template({ activity: this.model });
       this.$el.html(content);
+      this.matchList();
       this.attachSubviews();
     }
     return this;

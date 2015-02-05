@@ -1,0 +1,9 @@
+<% matches.forEach( function (match) { %>
+  <li>
+    <%= (100 * match.count / match.total).toFixed(2) %>%:
+    <a data-id="<%= match.id %>" href="#/activity/<%= match.id %>"
+      data-title="<%= match.title %>" id="match">
+      <%= match.title %>
+    </a>
+  </li>
+<% }) %>
