@@ -20,7 +20,7 @@ column name | data type | details
 id          | integer   | not null, primary key
 activity_id | integer   | not null, foreign key (references activities)
 date        | date      | not null
-body        | string    | not null
+body        | string    | 
 image       | string    |
 
 ## votes
