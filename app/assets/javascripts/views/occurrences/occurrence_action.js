@@ -1,4 +1,4 @@
-ActoExplaino.Views.Occurrence = Backbone.View.extend({
+ActoExplaino.Views.OccurrenceAction = Backbone.View.extend({
   template: JST['occurrences/occurrence'],
   formTemplate: JST['occurrences/form'],
   errTemplate: JST['shared/errors'],
@@ -37,6 +37,7 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
   render: function () {
     var content = this.template({ occurrence: this.model });
     this.$el.html(content);
+    this.$el.addClass('o-left');
     return this;
   },
 

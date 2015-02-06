@@ -4,6 +4,7 @@ ActoExplaino.Views.OccurrenceView = Backbone.View.extend({
   render: function () {
     var content = this.template({ occurrence: this.model });
     this.$el.html(content);
+    this.$el.addClass('o-right');
     return this;
   }
 });

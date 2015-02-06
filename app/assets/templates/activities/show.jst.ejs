@@ -1,5 +1,10 @@
 <div id='activity-show' class='section'>
-  <h3><%= activity.escape('title') %></h3>
+  <div>
+    <div class='section'><h3><%= activity.escape('title') %></h3></div>
+    <div class='section'>
+      <h3 id='match-title'></h3>
+    </div>
+  </div>
   <form id='add'>
     <input type="hidden" name="activity_id" value="<%= activity.id %>">
     <textarea name="occurrence[body]" placeholder="Enter description..."></textarea><br>
