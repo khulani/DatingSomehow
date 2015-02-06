@@ -17,6 +17,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this.model.occurrences().each(this.addOccurrence.bind(this));
 
     this.match = new ActoExplaino.Models.Activity();
+    this._matchSubs = [];
     this.listenTo(this.match, 'sync', this.addMatch);
   },
 
@@ -52,34 +53,48 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
   },
 
   addOccurrence: function (occurrence) {
+    var occurrenceView = new ActoExplaino.Views.OccurrenceAction({
+      model: occurrence
+    });
     var reorder = []; // for displaying new created occurrences in the correct order
     if (_.last(this.subviews('.occurrences'))) {
       while (_.last(this.subviews('.occurrences')).model.get('date') > occurrence.get('date')) {
         reorder.push(this.subviews('.occurrences').pop().remove());
       }
+      var height = new Date(occurrence.get('date')) - new Date(_.last(this.subviews('.occurrences')).model.get('date'));
+      occurrenceView.setHeight(height / (3600 * 24 * 1000));
     }
-
-    var occurrenceView = new ActoExplaino.Views.OccurrenceAction({ model: occurrence });
     this.addSubview('.occurrences', occurrenceView);
 
     while (reorder.length > 0) {
-      this.addSubview('.occurrences',reorder.pop());
+      var last = reorder.pop();
+      var height = new Date(last.model.get('date')) - new Date(_.last(this.subviews('.occurrences')).model.get('date'));
+      last.setHeight(height / (3600 * 24 * 1000));
+      this.addSubview('.occurrences', last);
     }
   },
 
   addMatchOccurrence: function (occurrence) {
+    var occurrenceMatchView = new ActoExplaino.Views.OccurrenceView({ model: occurrence });
     var reorder = []; // for displaying new created occurrences in the correct order
     if (_.last(this.subviews('.occurrences'))) {
       while (_.last(this.subviews('.occurrences')).model.get('date') > occurrence.get('date')) {
         reorder.push(this.subviews('.occurrences').pop().remove());
       }
+      if (_.last(this.subviews('.occurrences')).model.get('date') != occurrence.get('date')) {
+        var height = new Date(occurrence.get('date')) - new Date(_.last(this.subviews('.occurrences')).model.get('date'));
+        occurrenceMatchView.setHeight(height / (3600 * 24 * 1000));
+      }
     }
 
-    var occurrenceMatchView = new ActoExplaino.Views.OccurrenceView({ model: occurrence });
+    this._matchSubs.push(occurrenceMatchView);
     this.addSubview('.occurrences', occurrenceMatchView);
 
     while (reorder.length > 0) {
-      this.addSubview('.occurrences',reorder.pop());
+      var last = reorder.pop();
+      var height = new Date(last.model.get('date')) - new Date(_.last(this.subviews('.occurrences')).model.get('date'));
+      last.setHeight(height / (3600 * 24 * 1000));
+      this.addSubview('.occurrences', last);
     }
   },
 
@@ -102,11 +117,12 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
   },
 
   matchShow: function (event) {
-    if (this._currentMatch) {
-      this._currentMatch && this._currentMatch.remove();
-      this.removeSubview('#match-show', this._currentMatch);
-    }
     event.preventDefault();
+    var that = this;
+    this._matchSubs.forEach(function (matchSub) {
+      that.removeSubview('.occurrences', matchSub);
+    });
+    this._matchSubs = [];
     var title = $(event.currentTarget).data('title');
     this.$('#match-title').html(title);
     var id = $(event.currentTarget).data('id');

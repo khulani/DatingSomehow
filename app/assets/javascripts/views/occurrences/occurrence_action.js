@@ -3,10 +3,22 @@ ActoExplaino.Views.OccurrenceAction = Backbone.View.extend({
   formTemplate: JST['occurrences/form'],
   errTemplate: JST['shared/errors'],
 
+  initialize: function () {
+    this.height = 0;
+  },
+
   events: {
     'click .delete': 'destroy',
     'dblclick': 'edit',
     'submit #update': 'updateOccurrence'
+  },
+
+  setHeight: function (height) {
+    if (height < 5) {
+      this.height = height;
+    } else {
+      this.height = 5;
+    }
   },
 
   destroy: function () {
@@ -38,6 +50,7 @@ ActoExplaino.Views.OccurrenceAction = Backbone.View.extend({
     var content = this.template({ occurrence: this.model });
     this.$el.html(content);
     this.$el.addClass('o-left');
+    this.$el.height(this.height * 30);
     return this;
   },
 

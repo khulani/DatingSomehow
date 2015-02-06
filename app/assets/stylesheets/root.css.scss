@@ -7,9 +7,17 @@
 }
 
 .o-left {
-  height: 100px;
+  position: relative;
+  left: -103px;
+  text-align: right;
 }
 
 .o-right {
-  height: 100px;
+  position: relative;
+  left: 103px;
+}
+
+.gap {
+  width: 10px;
+  height: 50px
 }
