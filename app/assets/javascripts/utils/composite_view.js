@@ -23,6 +23,7 @@ Backbone.CompositeView = Backbone.View.extend({
         if (!added && date > $(occurrences[i]).attr('id')) {
           $(occurrences[i]).before($element);
           added = true;
+          break;
         }
       }
       if (!added) {

@@ -121,20 +121,24 @@ button.occurrence.delete {
   background: black;
 }
 
+.occurrence.form {
+  padding: 10px 10px 10px 10px;
+}
+
+
+
+
 .triangle-border:before {
   content:"";
   position:absolute;
   border-style:solid;
 }
 
-/* creates the smaller  triangle */
 .triangle-border:after {
   content:"";
   position:absolute;
   border-style:solid;
 }
-
-
 
 // outer triangle border for right
 .triangle-border.right:before {
@@ -184,7 +188,6 @@ button.occurrence.delete {
   border-width: 12px 0 12px 28px;
   border-color: transparent rgba(128, 128, 128, 0.8);
 }
-
 
 .triangle-border.left:hover:before {
   top: 45px;

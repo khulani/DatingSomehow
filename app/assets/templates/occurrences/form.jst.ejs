@@ -1,12 +1,19 @@
-<form id="update">
+<form class="occurrence form" id="update">
   <input type="hidden" name="activity_id"
-         value="<%= occurrence.escape('activity_id') %>">
-  <textarea name="occurrence[body]" placeholder="Enter description..."
-    ><%= occurrence.escape('body') %></textarea><br>
-  <input type="date" name="occurrence[date]"
-         value="<%= occurrence.escape('date') %>"><br>
-  <input type="text" name="occurrence[image]" placeholder="Enter picture..."
-         value="<%= occurrence.escape('image') %>"><br>
-  <input type="submit" value="Update Occurrence">
+           value="<%= occurrence.escape('activity_id') %>">
+  <div class="form-group">
+    <textarea class="form-control" name="occurrence[body]" placeholder="Enter description..."
+      ><%= occurrence.escape('body') %></textarea>
+  </div>
+  <div class="form-group">
+    <input type="date" name="occurrence[date]"
+           value="<%= occurrence.escape('date') %>">
+  </div>
+  <div class="form-group">
+    <input class="form-control" type="text" name="occurrence[image]" placeholder="Enter picture..."
+           value="<%= occurrence.escape('image') %>">
+  </div>
+  <input class="btn btn-default" type="submit" value="Update">
+  <button class="btn btn-warning btn-xs" id="cancel">Cancel</button>
 </form>
 <div class='errors-<%= occurrence.id %>'></div>

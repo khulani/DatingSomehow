@@ -1,12 +1,15 @@
 <button class='open left'></button>
 <div class='occurrence details left closed triangle-border'>
-  <div class='occurrence date'>
-    <%= occurrence.escape('date') %>:
+  <div class='edit-form'>
+    <div class='occurrence date'>
+      <%= occurrence.escape('date') %>:
+    </div>
+    <div class='occurrence body'>
+      <%= occurrence.escape('body') %>
+    </div>
+    <div class='occurrence delete'>
+      <button class='occurrence delete btn btn-danger btn-xs' >Delete</button>
+    </div>
   </div>
-  <div class='occurrence body'>
-    <%= occurrence.escape('body') %>
-  </div>
-  <div class='occurrence delete'>
-    <button class='occurrence delete'>Delete</button>
-  </div>
+  <div id="errors-<%= occurrence.id %>"></div>
 </div>

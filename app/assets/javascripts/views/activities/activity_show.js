@@ -68,7 +68,6 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     });
     this.addSubview('.occurrences', occurrenceView);
     this.open = false;
-
   },
 
   removeOccurrence: function (occurrence) {
@@ -83,7 +82,8 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
 
   reorderOccurrence: function (occurrence) {
     this.removeOccurrence(occurrence);
-    this.addOccurrence(occurrence);
+    this.open = true;
+    this.addOccurrence(occurrence, true);
   },
 
   matchList: function() {

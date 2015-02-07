@@ -21,7 +21,8 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
     'dblclick .occurrence': 'edit',
     'submit #update': 'updateOccurrence',
     'mouseenter .open': 'openDetails',
-    'mouseleave .open': 'closeDetails'
+    'mouseleave .open': 'closeDetails',
+    'click #cancel': 'cancel'
   },
 
   setHeight: function (height) {
@@ -71,8 +72,13 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
   edit: function () {
     if (this.editable) {
       var content = this.formTemplate({ occurrence: this.model });
-      this.$el.html(content);
+      this.$('.edit-form').html(content);
     }
+  },
+
+  cancel: function (event) {
+    event.preventDefault();
+    this.render();
   },
 
   updateOccurrence: function (event) {
@@ -127,6 +133,6 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
 
   renderErrors: function (errors) {
     var content = this.errTemplate({ errors: errors });
-    this.$el.find('.errors-' + this.model.id).html(content);
+    this.$el.find('#errors-' + this.model.id).html(content);
   }
 })

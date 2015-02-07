@@ -1,12 +1,12 @@
 <% if (user && user.id) { %>
   <%= user.escape('email') %> logged in! |
-  <button id='signout'>Sign Out!</button>
+  <button class="btn btn-warning btn-xs" id='signout'>Sign Out!</button>
 <% } else { %>
   <form id='signin'>
     Email: <input type="email" name="email" value="">
     Password: <input type="password" name="password" value="">
-    <input type="submit" value="Sign in!">
+    <input type="submit" class="btn btn-primary btn-sm" value="Sign in!">
   </form>
   <div class='inerrors'></div>
-  | <button id='signupbutton'>Sign Up!</button><div id='signupform'></div>
+  | <button class="btn btn-success btn-sm" id='signupbutton'>Sign Up!</button><div id='signupform'></div>
 <% } %>
