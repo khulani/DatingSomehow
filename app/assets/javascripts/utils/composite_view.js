@@ -20,13 +20,22 @@ Backbone.CompositeView = Backbone.View.extend({
       var added = false;
       var occurrences = this.$('.timeline');
       for (var i = 0; i < occurrences.length; i++) {
-        if (!added && date > $(occurrences[i]).attr('id')) {
+        var beforeDate = $(occurrences[i]).attr('id');
+        if (!added && date > beforeDate) {
           $(occurrences[i]).before($element);
+          var height = 20 + (Math.log(new Date(date) - new Date(beforeDate)) - 18)*35;
+          $element.css('height', height);
+          if (i>0) {
+            var afterDate = $(occurrences[i-1]).attr('id');
+            var height = 20 + (Math.log(new Date(afterDate) - new Date(date)) - 18)*35;
+            $(occurrences[i-1]).css('height', height);
+          }
           added = true;
           break;
         }
       }
       if (!added) {
+        $element.css('height', 30);
         this.$(selector).append($element);
       }
     } else {
