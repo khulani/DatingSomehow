@@ -1,1 +1,9 @@
-<%= occurrence.escape('body') %> <button class='delete'>x</button> - <%= occurrence.escape('date') %>
+<button class='open right'>-o-</button>
+<div class="occurrence right closed">
+  <div class='occurrence date'>
+    <%= occurrence.escape('date') %>:
+  </div>
+  <div class='occurrence body'>
+    <%= occurrence.escape('body') %>
+  </div>
+</div>

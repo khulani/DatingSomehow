@@ -7,7 +7,25 @@ Backbone.CompositeView = Backbone.View.extend({
   },
 
   attachSubview: function (selector, subview, callback) {
-    this.$(selector).prepend(subview.$el);
+    // for sorting occurrences
+    if (selector === '.occurrences') {
+      var date = subview.model.get('date');
+      if (this.$('#' + date).length) {
+        this.$('#' + date).prepend(subview.$el);
+      } else {
+        var $element = $('<div class="timeline" id="' + date + '">');
+        var $element = $('<div class="timeline" id="' + date + '">');
+        $element.prepend(subview.$el)
+        this.$(selector).prepend($element);
+      }
+      $('.timeline').sort(function (a, b) {
+        var contentA = parseInt( $(a).attr('id'));
+        var contentB = parseInt( $(b).attr('id'));
+        return (contentA < contentB) ? -1 : (contentA > contentB) ? 1 : 0;
+      });
+    } else {
+      this.$(selector).prepend(subview.$el);
+    }
     // Bind events in case `subview` has previously been removed from
     // DOM.
     subview.delegateEvents();

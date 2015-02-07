@@ -1,23 +1,116 @@
 // Place all the styles related to the root controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+
 .section {
   float: left;
   padding: 10px 10px;
 }
 
-.o-left {
-  position: relative;
-  left: -103px;
-  text-align: right;
+.editable {
+  float: left;
 }
 
-.o-right {
-  position: relative;
-  left: 103px;
+.uneditable {
+  float: right;
 }
 
-.gap {
-  width: 10px;
-  height: 50px
+.occurrences {
+  margin: 0 auto;
+  width: 70px;
+}
+
+.timeline {
+  position: relative;
+  clear: both;
+  width: 100%;
+}
+
+.closed {
+  display: none;
+}
+
+.opened {
+  display: block;
+}
+
+.focus {
+  z-index: 1;
+}
+
+.occurrence.left:hover {
+  z-index: 1;
+  background: floralwhite;
+  border-color: gold;
+}
+
+.occurrence.right:hover {
+  z-index: 1;
+  background: floralwhite;
+  border-color: gold;
+}
+
+.occurrence.left {
+  position: absolute;
+  left: -210px;
+  top: -45px;
+  width: 200px;
+  border: 2px solid gray;
+  background: rgba(245, 255, 250, 0.9);
+  border-radius: 10px;
+}
+
+.occurrence.right {
+  position: absolute;
+  left: 80px;
+  top: -45px;
+  min-width: 200px;
+  border: 2px solid gray;
+  background: rgba(245, 255, 250, 0.9);
+  border-radius: 10px;
+}
+
+.occurrence.delete {
+  margin: 10px 10px 10px 10px;
+  min-height: 15px;
+}
+
+button.occurrence.delete {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+}
+
+.occurrence.date {
+  margin: 10px 10px 10px 10px;
+  padding: 5px 5px 5px 5px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  background: white;
+}
+
+.occurrence.body {
+  margin: 10px 10px 10px 10px;
+  padding: 10px 10px 10px 10px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  background: white;
+}
+
+.open.right {
+  background: green;
+  border-radius: 10px;
+}
+
+.open.left {
+  background: yellow;
+  border-radius: 10px;
 }

@@ -16,8 +16,8 @@ ActoExplaino.Views.OccurrenceView = Backbone.View.extend({
   render: function () {
     var content = this.template({ occurrence: this.model });
     this.$el.html(content);
-    this.$el.addClass('o-right');
-    this.$el.height(this.height * 30);
+    this.$el.height(30 + this.height * 30);
+    this.$el.attr('id', this.model.escape('date'));
     return this;
   }
 });
