@@ -7,11 +7,16 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
   initialize: function (options) {
     this.height = 0;
     this.editable = options.editable;
-    this.details = false;
+    if (options.open) {
+      this.open = options.open;
+
+    } else {
+      this.open = false;
+    }
   },
 
   events: {
-    'click .delete': 'destroy',
+    'click button.delete': 'destroy',
     'click .open': 'toggleDetails',
     'dblclick .occurrence': 'edit',
     'submit #update': 'updateOccurrence',
@@ -37,30 +42,27 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
     // debugger;
     // $('#' + this.model.id).dialog('open');
     var $details = this.$('.occurrence');
-    if (this.details) {
-      var $details = this.$('.opened');
-      $details.removeClass('opened');
+    var $button = this.$('.open')
+    if (this.open) {
+      $button.removeClass('pressed');
       $details.addClass('closed');
-      this.details = false;
+      this.open = false;
     } else {
-      var $details = this.$('.closed');
       $details.removeClass('closed');
-      $details.addClass('opened');
-      this.details = true;
+      $button.addClass('pressed');
+      this.open = true;
     }
   },
 
   openDetails: function () {
     var $details = this.$('.occurrence');
     $details.removeClass('closed');
-    $details.addClass('opened');
     $details.addClass('focus');
   },
 
   closeDetails: function () {
     var $details = this.$('.occurrence');
-    if (!this.details) {
-      $details.removeClass('opened');
+    if (!this.open) {
       $details.addClass('closed');
     }
     $details.removeClass('focus');
@@ -109,6 +111,11 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
       this.$el.addClass('uneditable')
     }
     this.$el.html(content);
+
+    if (this.open) {
+      this.$('.occurrence').removeClass('closed');
+      this.$('.open').addClass('pressed');
+    }
     //       this.$el.height(60 + this.height * 30);
     // this.$('div').attr('id', this.model.id);
     // this.$('.occurrence').dialog({

@@ -13,6 +13,8 @@ gem 'jquery-ui-rails'
 gem 'jbuilder', '~> 2.0'
 gem 'bcrypt', '~> 3.1.7'
 
+gem 'bootstrap-sass'
+
 group :development do
   gem 'byebug'
   gem 'backbone-on-rails'

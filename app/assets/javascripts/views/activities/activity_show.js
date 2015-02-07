@@ -24,7 +24,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this._matchSubs = [];
     this.listenTo(this.match, 'sync', this.addMatch);
 
-    this._ = [];
+    this.open = false;
   },
 
   events: {
@@ -50,6 +50,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
       success: function () {
         that.$el.find('form')[0].reset();
         that.$el.find('.errors').empty();
+        that.open = true;
         that.model.occurrences().add(occurrence);
       },
       error: function (obj, errors) {
@@ -62,37 +63,13 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this.listenTo(occurrence, 'change:date', this.reorderOccurrence);
     var occurrenceView = new ActoExplaino.Views.Occurrence({
       model: occurrence,
-      editable: editable
+      editable: editable,
+      open: this.open
     });
     this.addSubview('.occurrences', occurrenceView);
-  },
+    this.open = false;
 
-  // addMatchOccurrence: function (occurrence) {
-  //   var occurrenceMatchView = new ActoExplaino.Views.OccurrenceView({ model: occurrence });
-  //   var reorder = []; // for displaying new created occurrences in the correct order
-  //   if (_.last(this.subviews('.occurrences'))) {
-  //     while (_.last(this.subviews('.occurrences')).model.get('date') > occurrence.get('date')) {
-  //       reorder.push(this.subviews('.occurrences').pop().remove());
-  //     }
-  //     if (_.last(this.subviews('.occurrences')).model.get('date') != occurrence.get('date')) {
-  //       var height = new Date(occurrence.get('date')) - new Date(_.last(this.subviews('.occurrences')).model.get('date'));
-  //       if (height === 0){
-  //         occurrenceMatchView.$el = $('#' + occurrence.get('date'));
-  //       }
-  //       occurrenceMatchView.setHeight(height / (3600 * 24 * 1000));
-  //     }
-  //   }
-  //
-  //   this._matchSubs.push(occurrenceMatchView);
-  //   this.addSubview('.occurrences', occurrenceMatchView);
-  //
-  //   while (reorder.length > 0) {
-  //     var last = reorder.pop();
-  //     var height = new Date(last.model.get('date')) - new Date(_.last(this.subviews('.occurrences')).model.get('date'));
-  //     last.setHeight(height / (3600 * 24 * 1000));
-  //     this.addSubview('.occurrences', last);
-  //   }
-  // },
+  },
 
   removeOccurrence: function (occurrence) {
     var occurrenceView = _.find(
@@ -153,9 +130,5 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
   renderErrors: function (errors) {
     var content = this.errTemplate({ errors: errors });
     this.$el.find('.errors').html(content);
-  },
-
-  renderTimeline: function () {
-
   }
 })

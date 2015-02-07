@@ -25,7 +25,7 @@
 
 .occurrences {
   margin: 0 auto;
-  width: 70px;
+  width: 40px;
 }
 
 .timeline {
@@ -46,6 +46,8 @@
   z-index: 1;
 }
 
+
+
 .occurrence.left:hover {
   z-index: 1;
   background: floralwhite;
@@ -60,11 +62,11 @@
 
 .occurrence.left {
   position: absolute;
-  left: -210px;
+  left: -230px;
   top: -45px;
   width: 200px;
   border: 2px solid gray;
-  background: rgba(245, 255, 250, 0.9);
+  background: rgba(255, 245, 255, 0.9);
   border-radius: 10px;
 }
 
@@ -106,11 +108,108 @@ button.occurrence.delete {
 }
 
 .open.right {
-  background: green;
+  background: rgba(245, 255, 250, 1);
   border-radius: 10px;
 }
 
 .open.left {
-  background: yellow;
+  background: rgba(255, 245, 255, 1);
   border-radius: 10px;
+}
+
+.open.pressed {
+  background: black;
+}
+
+.triangle-border:before {
+  content:"";
+  position:absolute;
+  border-style:solid;
+}
+
+/* creates the smaller  triangle */
+.triangle-border:after {
+  content:"";
+  position:absolute;
+  border-style:solid;
+}
+
+
+
+// outer triangle border for right
+.triangle-border.right:before {
+  top: 45px;
+  bottom: auto;
+  left: auto;
+  left: -28px;
+  border-width: 12px 28px 12px 0;
+  border-color: transparent rgba(128, 128, 128, 0.8);
+}
+
+.triangle-border.right:hover:before {
+  top: 45px;
+  bottom: auto;
+  left: auto;
+  left: -28px;
+  border-width: 12px 28 12px 0;
+  border-color: transparent gold;
+}
+
+// inner triangle background for right
+.triangle-border.right:after {
+  top: 48px;
+  bottom: auto;
+  left: auto;
+  left: -21px;
+  border-width: 9px 21px 9px 0;
+  border-color: transparent rgba(245, 255, 250, 1);
+}
+
+.triangle-border.right:hover:after {
+  top: 48px;
+  bottom: auto;
+  left: auto;
+  left: -21px;
+  border-width: 9px 21px 9px 0;
+  border-color: transparent floralwhite;
+}
+
+
+// outer triangle border for left
+.triangle-border.left:before {
+  top: 45px;
+  bottom: auto;
+  left: auto;
+  right: -28px;
+  border-width: 12px 0 12px 28px;
+  border-color: transparent rgba(128, 128, 128, 0.8);
+}
+
+
+.triangle-border.left:hover:before {
+  top: 45px;
+  bottom: auto;
+  left: auto;
+  right: -28px;
+  border-width: 12px 0 12px 28px;
+  border-color: transparent gold;
+}
+
+// inner triangle background for left
+.triangle-border.left:after {
+  top: 48px;
+  bottom: auto;
+  left: auto;
+  right: -21px;
+  border-width: 9px 0 9px 21px;
+  border-color: transparent rgba(255, 245, 255, 1);
+}
+
+.triangle-border.left:hover:after {
+  top: 48px;
+  bottom: auto;
+  left: auto;
+  right: -21px;
+  border-width: 9px 0 9px 21px;
+  border-color: transparent floralwhite;
 }

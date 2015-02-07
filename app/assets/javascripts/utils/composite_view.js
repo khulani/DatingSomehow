@@ -10,19 +10,24 @@ Backbone.CompositeView = Backbone.View.extend({
     // for sorting occurrences
     if (selector === '.occurrences') {
       var date = subview.model.get('date');
+      var $element = $('<div class="timeline" id="' + date + '">');
+
       if (this.$('#' + date).length) {
         this.$('#' + date).prepend(subview.$el);
       } else {
-        var $element = $('<div class="timeline" id="' + date + '">');
-        var $element = $('<div class="timeline" id="' + date + '">');
         $element.prepend(subview.$el)
-        this.$(selector).prepend($element);
       }
-      $('.timeline').sort(function (a, b) {
-        var contentA = parseInt( $(a).attr('id'));
-        var contentB = parseInt( $(b).attr('id'));
-        return (contentA < contentB) ? -1 : (contentA > contentB) ? 1 : 0;
-      });
+      var added = false;
+      var occurrences = this.$('.timeline');
+      for (var i = 0; i < occurrences.length; i++) {
+        if (!added && date > $(occurrences[i]).attr('id')) {
+          $(occurrences[i]).before($element);
+          added = true;
+        }
+      }
+      if (!added) {
+        this.$(selector).append($element);
+      }
     } else {
       this.$(selector).prepend(subview.$el);
     }
