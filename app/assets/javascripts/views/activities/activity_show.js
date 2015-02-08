@@ -24,12 +24,41 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this._matchSubs = [];
     this.listenTo(this.match, 'sync', this.addMatch);
 
+    // sets occurrence details to open on default
     this.open = false;
+
+    // tracks if form is open or not
+    this._form = true;
   },
 
   events: {
     'submit #add': 'createOccurrence',
-    'click #match': 'matchShow'
+    'click #match': 'matchShow',
+    'mousemove .occurrences': 'updatePos',
+    'click .timeline': 'toggleAddForm'
+  },
+
+  updatePos: function (event) {
+    if (this._form) {
+      debugger;
+      var $timeline;
+      if ($(event.target).attr('id')) {
+        $timeline = $(event.target)
+
+      } else {
+        $timeline = $(event.target.parentElement.parentElement);
+      }
+      var date = new Date($timeline.attr('id'));
+      var height = parseFloat($timeline.css('height'));
+
+      var pct = event.offsetY / height;
+
+      var days = (date.valueOf() - Math.pow(Math.E, ((height - 20)/35 + 18))) /
+        (3600 * 24 * 1000);
+      var date; event target
+      console.log('offsetY: ' + event.offsetY);
+      this.$('.occurrence-new').css('top', event.pageY - 55);
+    }
   },
 
   checkUser: function () {

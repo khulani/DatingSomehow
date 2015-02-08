@@ -15,6 +15,27 @@
   padding: 10px 10px;
 }
 
+#activity-show {
+  width: 300px;
+}
+
+.occurrence-new {
+  position: absolute;
+  left: 100px;
+  top: 0px;
+  background: rgba(255, 245, 255, 0.9);
+  padding: 10px 10px 10px 10px;
+  border: 2px solid gray;
+  border-radius: 10px;
+  z-index: 2;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+}
+
+.occurrence-new:hover {
+  background: floralwhite;
+  border-color: gold;
+}
+
 .editable {
   float: left;
 }
