@@ -28,37 +28,77 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this.open = false;
 
     // tracks if form is open or not
-    this._form = true;
+    this._form = false;
+    // tracks position;
+    this._posY = 0;
   },
 
   events: {
-    'submit #add': 'createOccurrence',
+    'click #add-submit': 'createOccurrence',
+    'click #add-cancel': 'cancelForm',
     'click #match': 'matchShow',
     'mousemove .occurrences': 'updatePos',
-    'click .timeline': 'toggleAddForm'
+    'dblclick .timeline': 'toggleAddForm',
+    'click .occurrences': 'preventSelect'
+  },
+
+  preventSelect: function (event) {
+    event.preventDefault();
+  },
+
+  toggleAddForm: function () {
+    var $form = this.$('.occurrence-new');
+    // var $button = this.$('.open')
+    if (this._form) {
+      // $button.removeClass('pressed');
+      $form.addClass('closed');
+      this._form = false;
+    } else {
+      // $form.css('top', event.pageY - 55);
+      $form.removeClass('closed');
+      // $button.addClass('pressed');
+      this._form = true;
+    }
+  },
+
+  padStr: function (i) {
+    return (i < 10) ? "0" + i : "" + i;
   },
 
   updatePos: function (event) {
-    if (this._form) {
-      debugger;
-      var $timeline;
-      if ($(event.target).attr('id')) {
-        $timeline = $(event.target)
+    var $timeline;
+    if ($(event.target).attr('id')) {
+      $timeline = $(event.target)
 
-      } else {
-        $timeline = $(event.target.parentElement.parentElement);
-      }
-      var date = new Date($timeline.attr('id'));
-      var height = parseFloat($timeline.css('height'));
-
-      var pct = event.offsetY / height;
-
-      var days = (date.valueOf() - Math.pow(Math.E, ((height - 20)/35 + 18))) /
-        (3600 * 24 * 1000);
-      var date; event target
-      console.log('offsetY: ' + event.offsetY);
-      this.$('.occurrence-new').css('top', event.pageY - 55);
+    } else if ($(event.target.parentElement).attr('id')) {
+      $timeline = $(event.target.parentElement);
+    } else {
+      $timeline = $(event.target.parentElement.parentElement);
     }
+    var dateHigh = new Date($timeline.attr('id'));
+    // console.log('dateHigh: ' + $timeline.attr('id'));
+    // console.log('dateHigh: ' + dateHigh);
+    var dateHigh;
+    if ($timeline.next().attr('id')) {
+      dateLow = new Date($timeline.next().attr('id'))
+    //   console.log('dateLow: ' + $timeline.next().attr('id'));
+    //   console.log('dateLow: ' + dateLow);
+    } else {
+      dateLow = dateHigh;
+    }
+    var height = parseFloat($timeline.css('height'));
+
+    var pct = event.offsetY / height;
+    // console.log(pct);
+
+    var days = Math.round(pct * (dateHigh - dateLow) / (3600 * 24 * 1000));
+    // console.log(days);
+    dateHigh.setDate(dateHigh.getDate() - days + 1);
+    var dateStr = dateHigh.getFullYear() + '-' + this.padStr(dateHigh.getMonth() + 1)
+      + '-' + this.padStr(dateHigh.getDate());
+    // console.log(dateStr);
+    this.$('#new-date').val(dateStr);
+    this.$('.occurrence-new').css('top', event.pageY - 55);
   },
 
   checkUser: function () {
@@ -73,7 +113,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
   createOccurrence: function (event) {
     var that = this;
     event.preventDefault();
-    var formData = $(event.currentTarget).serializeJSON();
+    var formData = $(event.target.parentElement).serializeJSON();
     var occurrence = new ActoExplaino.Models.Occurrence(formData);
     occurrence.save({},{
       success: function () {
@@ -81,11 +121,17 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
         that.$el.find('.errors').empty();
         that.open = true;
         that.model.occurrences().add(occurrence);
+        that.toggleAddForm();
       },
       error: function (obj, errors) {
         that.renderErrors(errors.responseJSON['errors']);
       }
     });
+  },
+
+  cancelForm: function (event) {
+    event.preventDefault();
+    this.toggleAddForm();
   },
 
   addOccurrence: function (occurrence, editable) {

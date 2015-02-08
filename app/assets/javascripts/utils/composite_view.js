@@ -12,17 +12,23 @@ Backbone.CompositeView = Backbone.View.extend({
       var date = subview.model.get('date');
       var $element = $('<div class="timeline" id="' + date + '">');
 
-      if (this.$('#' + date).length) {
-        this.$('#' + date).prepend(subview.$el);
-      } else {
-        $element.prepend(subview.$el)
-      }
       var added = false;
+      if (this.$('#' + date).length) {
+        $element = this.$('#' + date);
+        this.$('#' + date).prepend(subview.$el);
+        added = true;
+      } else {
+        $element.prepend(subview.$el);
+      }
+
       var occurrences = this.$('.timeline');
       for (var i = 0; i < occurrences.length; i++) {
         var beforeDate = $(occurrences[i]).attr('id');
-        if (!added && date > beforeDate) {
-          $(occurrences[i]).before($element);
+        if (date > beforeDate) {
+          if (!added) {
+            $(occurrences[i]).before($element);
+            added = true;
+          }
           var height = 20 + (Math.log(new Date(date) - new Date(beforeDate)) - 18)*35;
           $element.css('height', height);
           if (i>0) {
@@ -30,7 +36,6 @@ Backbone.CompositeView = Backbone.View.extend({
             var height = 20 + (Math.log(new Date(afterDate) - new Date(date)) - 18)*35;
             $(occurrences[i-1]).css('height', height);
           }
-          added = true;
           break;
         }
       }
