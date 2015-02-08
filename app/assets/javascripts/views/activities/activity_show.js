@@ -29,9 +29,11 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this.open = false;
     // tracks if form is open or not
     this._form = false;
-    this._timeline = 0;
+    this._timelineShift = 0;
     this._scroll = 0;
     this.scrolling;
+    this._timelineWindow = $(window).height() * .6;
+    this._timelineLength = 0;
   },
 
   events: {
@@ -39,12 +41,23 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     'click #add-cancel': 'cancelForm',
     'click #match': 'matchShow',
     'mousemove .occurrences': 'updatePos',
-    'dblclick .timeline': 'toggleAddForm',
+    'dblclick .occurrences': 'toggleAddForm',
     'click #activity-show': 'preventSelect',
-    'mouseenter .scroll-down': 'scrollDown',
+    'mousemove .scroll-down': 'scrollDown',
     'mouseleave .scroll-down': 'scrollStop',
-    'mouseenter .scroll-up': 'scrollUp',
+    'mousemove .scroll-up': 'scrollUp',
     'mouseleave .scroll-up': 'scrollStop',
+    'mouseover .timeline-window': 'timelineLength'
+  },
+
+  timelineLength: function () {
+    this._timelineLength = this.$('.occurrences').height();
+    if (this._timelineLength < this._timelineWindow) {
+      this.$('.timeline-bar').height(this._timelineWindow);
+      // this._timelineLength = this._timelineWindow;
+    }
+
+    // console.log('timeline-window');
   },
 
   remove: function () {
@@ -56,22 +69,40 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this._scroll = 0;
   },
 
-  scrollUp: function () {
-    this._scroll = -5;
+  scrollUp: function (event) {
+    this._scroll = -((40 - event.offsetY) * 0.75);
   },
 
-  scrollDown: function () {
-    this._scroll = 5;
+  scrollDown: function (event) {
+    this._scroll = event.offsetY * 0.75;
   },
 
   scroll: function () {
-    this._timeline += this._scroll
-    this.$('.occurrences').css('bottom', this._timeline);
+    this._timelineShift += this._scroll
+    if (this._timelineShift < -(this._timelineWindow / 2)) {
+      this._timelineShift = -(this._timelineWindow / 2);
+    } else if (this._timelineLength > this._timelineWindow
+        && this._timelineShift > this._timelineLength - (this._timelineWindow / 2)) {
+          console.log('timelineShift: ' + this._timelineShift);
+          console.log('timelineLength: ' + this._timelineLength);
+          console.log('timelineWindow: ' + this._timelineWindow);
+        this._timelineShift = this._timelineLength - (this._timelineWindow / 2);
+    } else if (this._timelineShift >)
+
+    // else if ((this._timelineShift) > (this._timelineLength - (this._timelineWindow / 2))) {
+    //   console.log(this._timelineShift)
+    //   this._timelineShift = this._timelineLength - (this._timelineWindow /2);
+    //   if (this._timelineShift < 0) {
+    //     this._timelineShift = 0;
+    //   }
+    // }
+
+    this.$('.timeline-bar').css('bottom', this._timelineShift);
   },
 
   resize: function () {
     debugger;
-    this.$('.occurrences').css('height', $(window).height() * .6);
+    // this.$('.occurrences').css('height', $(window).height() * .6);
   },
 
   preventSelect: function (event) {
@@ -228,7 +259,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
       var content = this.template({ activity: this.model });
       this.$el.html(content);
       this.$('#match-title').empty();
-      this.$('.timeline-window').css('height', $(window).height() * .6);
+      this.$('.timeline-window').css('height', this._timelineWindow);
       this.matchList();
       this.attachSubviews();
     }

@@ -5,30 +5,34 @@
       <h3 id='match-title'></h3>
     </div>
   </div>
-  <div class="occurrence-new triangle-border left closed">
-    <form id='add'>
-      <input type="hidden" name="activity_id"
-        value="<%= activity.id %>">
-      <div class="form-group">
-        <textarea class="form-control" name="occurrence[body]"
-          placeholder="Enter description..."></textarea>
-      </div>
-      <div class="form-group">
-        <input id="new-date" type="date" name="occurrence[date]" value="">
-      </div>
-      <div class="form-group">
-        <input class="form-control" type="text" name="occurrence[image]"
-          placeholder="Enter picture..." value="">
-      </div>
-      <input class="btn btn-success" id="add-submit" type="submit" value="Add Occurrence">
-      <button class="btn btn-warning btn-xs" id="add-cancel">Cancel</button>
-    </form>
-    <div class='errors'></div>
-  </div>
   <div class="timeline-window">
-    <div class='occurrences'></div>
-    <div class="scroll-up"></div>
-    <div class="scroll-down"></div>
+    <div class="occurrence-new triangle-border left closed">
+      <form id='add'>
+        <input type="hidden" name="activity_id"
+          value="<%= activity.id %>">
+        <div class="form-group">
+          <textarea class="form-control" name="occurrence[body]"
+            placeholder="Enter description..."></textarea>
+        </div>
+        <div class="form-group">
+          <input id="new-date" type="date" name="occurrence[date]" value="">
+        </div>
+        <div class="form-group">
+          <input class="form-control" type="text" name="occurrence[image]"
+            placeholder="Enter picture..." value="">
+        </div>
+        <input class="btn btn-success" id="add-submit" type="submit" value="Add Occurrence">
+        <button class="btn btn-warning btn-xs" id="add-cancel">Cancel</button>
+      </form>
+      <div class='errors'></div>
+    </div>
+    <div class="timeline-window-inner">
+      <div class='timeline-bar'>
+        <div class='occurrences'></div>
+      </div>
+    </div>
+    <div class="scroll scroll-up"></div>
+    <div class="scroll scroll-down"></div>
   </div>
 </div>
 <div id='match-show' class='section'></div>
