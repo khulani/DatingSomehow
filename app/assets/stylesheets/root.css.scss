@@ -16,7 +16,12 @@
 }
 
 #activity-show {
-  width: 300px;
+  width: 600px;
+}
+
+.title {
+  width: 100%;
+  margin: 0 auto;
 }
 
 .occurrence-new {
@@ -44,9 +49,36 @@
   float: right;
 }
 
+.timeline-window {
+  clear:both;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
 .occurrences {
+  position: relative;
   margin: 0 auto;
   width: 40px;
+  border: 1px solid gray;
+}
+
+.scroll-up {
+  position: absolute;
+  margin: 0 auto;
+  top: 0px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid gray;
+}
+
+.scroll-down {
+  position: absolute;
+  margin: 0 auto;
+  width: 40px;
+  height: 40px;
+  border: 1px solid gray;
+  bottom: 0px;
 }
 
 .timeline {
@@ -67,8 +99,6 @@
 .focus {
   z-index: 1;
 }
-
-
 
 .occurrence.left:hover {
   z-index: 1;

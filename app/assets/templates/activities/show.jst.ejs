@@ -1,5 +1,5 @@
 <div id='activity-show' class='section'>
-  <div>
+  <div class='title'>
     <div class='section'><h3><%= activity.escape('title') %></h3></div>
     <div class='section'>
       <h3 id='match-title'></h3>
@@ -25,9 +25,14 @@
     </form>
     <div class='errors'></div>
   </div>
-  <div class='occurrences'></div>
+  <div class="timeline-window">
+    <div class='occurrences'></div>
+    <div class="scroll-up"></div>
+    <div class="scroll-down"></div>
+  </div>
 </div>
 <div id='match-show' class='section'></div>
 <div class='section'>
+  <div id="name">Matches: </div>
   <ul id='match-list'></ul>
 </div>

@@ -24,13 +24,14 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this._matchSubs = [];
     this.listenTo(this.match, 'sync', this.addMatch);
 
+    this.listenTo($(document), 'resize', this.resize);
     // sets occurrence details to open on default
     this.open = false;
-
     // tracks if form is open or not
     this._form = false;
-    // tracks position;
-    this._posY = 0;
+    this._timeline = 0;
+    this._scroll = 0;
+    this.scrolling;
   },
 
   events: {
@@ -39,7 +40,38 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     'click #match': 'matchShow',
     'mousemove .occurrences': 'updatePos',
     'dblclick .timeline': 'toggleAddForm',
-    'click .occurrences': 'preventSelect'
+    'click #activity-show': 'preventSelect',
+    'mouseenter .scroll-down': 'scrollDown',
+    'mouseleave .scroll-down': 'scrollStop',
+    'mouseenter .scroll-up': 'scrollUp',
+    'mouseleave .scroll-up': 'scrollStop',
+  },
+
+  remove: function () {
+    Backbone.CompositeView.prototype.remove.call(this);
+    clearInterval(this.scrolling);
+  },
+
+  scrollStop: function () {
+    this._scroll = 0;
+  },
+
+  scrollUp: function () {
+    this._scroll = -5;
+  },
+
+  scrollDown: function () {
+    this._scroll = 5;
+  },
+
+  scroll: function () {
+    this._timeline += this._scroll
+    this.$('.occurrences').css('bottom', this._timeline);
+  },
+
+  resize: function () {
+    debugger;
+    this.$('.occurrences').css('height', $(window).height() * .6);
   },
 
   preventSelect: function (event) {
@@ -196,9 +228,15 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
       var content = this.template({ activity: this.model });
       this.$el.html(content);
       this.$('#match-title').empty();
+      this.$('.timeline-window').css('height', $(window).height() * .6);
       this.matchList();
       this.attachSubviews();
     }
+    clearInterval(this.scrolling);
+    var that = this;
+    this.scrolling = setInterval(function() {
+      that.scroll();
+    }, 30);
     return this;
   },
 
