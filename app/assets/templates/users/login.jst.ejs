@@ -1,12 +1,61 @@
-<% if (user && user.id) { %>
-  <%= user.escape('email') %> logged in! |
-  <button class="btn btn-warning btn-xs" id='signout'>Sign Out!</button>
-<% } else { %>
-  <form id='signin'>
-    Email: <input type="email" name="email" value="">
-    Password: <input type="password" name="password" value="">
-    <input type="submit" class="btn btn-primary btn-sm" value="Sign in!">
-  </form>
-  <div class='inerrors'></div>
-  | <button class="btn btn-success btn-sm" id='signupbutton'>Sign Up!</button><div id='signupform'></div>
-<% } %>
+<div class="navbar-header">
+  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+          data-target="#collapse-login">
+    <span class="sr-only">Toggle navigation</span>
+    <span class="icon-bar"></span>
+  </button>
+  <a class="navbar-brand" href="#">Somehow We're Dating </a>
+</div>
+
+
+<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+  <% if (user && user.id) { %>
+    <button class="btn btn-warning btn-xs navbar-btn navbar-right" id='signout'>Sign Out!</button>
+    <ul class="nav navbar-nav navbar-right">
+      <li><p class='navbar-text'> <%= user.escape('email') %> logged in! </p></li>
+    </ul>
+  <% } else { %>
+    <ul class="nav navbar-nav navbar-right">
+      <li class='in-errors'></li>
+    </ul>
+    <form id='signin' class='navbar-form navbar-right'>
+      <label class="sr-only" for="email">Email</label>
+      <input  placeholder="Email" id="email" type="email" name="email" value="">
+      <label class="sr-only" for="password">Password</label>
+      <input placeholder='Password' id="password" type="password" name="password" value="">
+      <input type="submit" class="btn btn-primary btn-sm" value="Sign in!">
+    </form>
+
+
+    <button class="btn btn-success btn-sm navbar-btn navbar-left" data-toggle="modal"
+            data-target="#sign-up" id='sign-up-button'>Sign Up!</button>
+    <div class="modal fade" id="sign-up" tabindex="-1" role="dialog"
+         aria-labelledby="signup-modal" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="signup-modal">Sign up here!</h4>
+          </div>
+          <div class="modal-body">
+            <div class='up-errors'></div>
+            <form id='signup'>
+              <div class='form-group'>
+                <label for="email-up">Email: </label>
+                <input class="form-control" id="email-up" type="email" name="email" value="">
+              </div>
+              <div class='form-group'>
+                <label for="password-up">Password: </label>
+                <input class="form-control" id='password-up' type="password" name="password" value="">
+              </div>
+              <input class="btn btn-success" type="submit" value="Sign Up!">
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% } %>
+</div><!-- /.navbar-collapse -->

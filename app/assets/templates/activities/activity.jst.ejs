@@ -1,2 +1,6 @@
-<a href="#/activities/<%= activity.id %>"><%= activity.escape('title') %></a>
-<button class='delete btn btn-danger btn-xs'>x</button>
+<div class='panel'>
+  <button type="button" class="delete close" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <a href="#/activities/<%= activity.id %>"><%= activity.escape('title') %></a>
+</div>

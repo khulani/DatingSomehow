@@ -42,7 +42,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     'click #add-cancel': 'cancelForm',
     'click #match': 'matchShow',
     'mousemove .occurrences': 'updatePos',
-    'dblclick .occurrences': 'toggleAddForm',
+    'dblclick .timeline-bar': 'toggleAddForm',
     'click #activity-show': 'preventSelect',
     'mousemove .scroll-down': 'scrollDown',
     'mouseleave .scroll-down': 'scrollStop',
@@ -178,14 +178,14 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     var pct = event.offsetY / height;
     // console.log(pct);
 
-    var days = Math.round(pct * (dateHigh - dateLow) / (3600 * 24 * 1000));
+    var days = Math.floor(pct * (dateHigh - dateLow) / (3600 * 24 * 1000));
     // console.log(days);
     dateHigh.setDate(dateHigh.getDate() - days + 1);
     var dateStr = dateHigh.getFullYear() + '-' + this.padStr(dateHigh.getMonth() + 1)
       + '-' + this.padStr(dateHigh.getDate());
     // console.log(dateStr);
     this.$('#new-date').val(dateStr);
-    this.$('.occurrence-new').css('top', event.pageY - 55);
+    this.$('.occurrence-new').css('top', event.pageY - 200);
   },
 
   checkUser: function () {
@@ -280,11 +280,15 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
 
   render: function () {
     if (this.user.id) {
-      var content = this.template({ activity: this.model });
+      var date = new Date;
+      var dateStr = date.getFullYear() + '-' + this.padStr(date.getMonth() + 1)
+        + '-' + this.padStr(date.getDate());
+      var content = this.template({ activity: this.model, date: dateStr});
       this.$el.html(content);
+      this.$el.addClass('row');
       this.$('#match-title').empty();
       this.$('.timeline-window').css('height', this._timelineWindow);
-
+      this.$('.timeline').css('height', this._timelineWindow / 2);
       this.matchList();
       this.attachSubviews();
     }

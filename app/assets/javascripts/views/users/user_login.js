@@ -5,12 +5,13 @@ ActoExplaino.Views.UserLogin = Backbone.View.extend({
 
   initialize: function () {
     this.listenTo(this.model, 'sync change', this.render);
+    this.signUp = false;
   },
 
   events: {
     'submit #signin': 'signIn',
     'click #signout': 'signOut',
-    'click #signupbutton': 'signUp',
+    // 'click #sign-up-button': 'signUp',
     'submit form#signup': 'createUser'
   },
 
@@ -26,14 +27,15 @@ ActoExplaino.Views.UserLogin = Backbone.View.extend({
         that.model.activities().set([]);
       },
       error: function (obj, errors) {
-        that.renderErrors(errors.responseJSON['errors'], '.uperrors');
+        that.renderErrors(errors.responseJSON['errors'], '.up-errors');
       }
     });
   },
 
   signUp: function () {
-    var content = this.formTemplate();
-    this.$el.find('#signupform').html(content);
+    // var content = this.formTemplate();
+    // this.$el.find('#signupform').html(content);
+    this.$('signup-modal').modal('show');
   },
 
   signIn: function (event) {
@@ -49,7 +51,7 @@ ActoExplaino.Views.UserLogin = Backbone.View.extend({
         that.model.activities().set(user.activities);
       },
       error: function (errors) {
-        that.renderErrors(errors.responseJSON['errors'], '.inerrors');
+        that.renderErrors(errors.responseJSON['errors'], '.in-errors');
       }
     });
   },
@@ -68,6 +70,7 @@ ActoExplaino.Views.UserLogin = Backbone.View.extend({
   render: function () {
     var content = this.template({ user: this.model });
     this.$el.html(content);
+    this.$el.addClass('container-fluid');
     return this;
   },
 

@@ -1,12 +1,11 @@
-<div id='activity-show' class='section'>
-  <div class='title'>
-    <div class='section'><h3><%= activity.escape('title') %></h3></div>
-    <div class='section'>
-      <h3 id='match-title'></h3>
-    </div>
+<div id='activity-show' class='col-xs-8'>
+  <div class='row'>
+    <div class='col-xs-6'><h3 class='title'><%= activity.escape('title') %></h3></div>
+    <div class='col-xs-6'><h3 class='title' id='match-title'></h3></div>
   </div>
   <div class="timeline-window">
     <div class="occurrence-new triangle-border left closed">
+      <div class='errors'></div>
       <form id='add'>
         <input type="hidden" name="activity_id"
           value="<%= activity.id %>">
@@ -24,21 +23,21 @@
         <input class="btn btn-success" id="add-submit" type="submit" value="Add Occurrence">
         <button class="btn btn-warning btn-xs" id="add-cancel">Cancel</button>
       </form>
-      <div class='errors'></div>
     </div>
     <div class="timeline-window-inner">
       <div class='timeline-bar'>
         <div class='timeline-top'></div>
-        <div class='occurrences'></div>
+        <div class='occurrences'>
+          <div class='timeline' id='<%= date %>'></div>
+        </div>
         <div class='timeline-bot'></div>
       </div>
     </div>
-    <div class="scroll scroll-up"></div>
-    <div class="scroll scroll-down"></div>
+    <div class="scroll scroll-up"><div class='arrow-up'></div></div>
+    <div class="scroll scroll-down"><div class='arrow-down'></div></div>
   </div>
 </div>
-<div id='match-show' class='section'></div>
-<div class='section'>
+<div class='col-xs-2'>
   <div id="name">Matches: </div>
   <ul id='match-list'></ul>
 </div>

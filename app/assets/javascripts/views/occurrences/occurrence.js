@@ -20,15 +20,10 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
     'click button.delete': 'destroy',
     'click .open': 'toggleDetails',
     'dblclick .occurrence': 'edit',
-    'submit #update': 'updateOccurrence',
+    'click button#update': 'updateOccurrence',
     'mouseenter .open': 'openDetails',
     'mouseleave .open': 'closeDetails',
-    'click #cancel': 'cancel',
-    'click .occurrences': 'preventSelect'
-  },
-
-  preventSelect: function (event) {
-    event.preventDefault();
+    'click #cancel': 'cancel'
   },
 
   setHeight: function (height) {
@@ -78,14 +73,14 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
   edit: function (event) {
     event.stopPropagation();
     if (this.editable) {
-      if (this.editing) {
-        this.editing = false;
-        this.render();
-      } else {
+      // if (this.editing) {
+      //   this.editing = false;
+      //   this.render();
+      // } else {
         var content = this.formTemplate({ occurrence: this.model });
         this.$('.edit-form').html(content);
         this.editing = true;
-      }
+      // }
     }
   },
 
@@ -95,14 +90,14 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
   },
 
   updateOccurrence: function (event) {
+    debugger;
     if (this.editable) {
       var that = this;
       event.preventDefault();
-      var formData = $(event.currentTarget).serializeJSON();
+      var formData = $(event.currentTarget.parentElement).serializeJSON();
       this.model.save(formData, {
         success: function () {
-          that.$el.find('form')[0].reset();
-          that.$el.find('.errors-' + that.model.id).empty();
+          // that.$el.find('.errors-' + that.model.id).empty();
           that.render();
         },
         error: function (obj, errors) {

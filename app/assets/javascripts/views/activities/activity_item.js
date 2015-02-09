@@ -1,5 +1,4 @@
 ActoExplaino.Views.Activity = Backbone.View.extend({
-  tagName: 'li',
   template: JST['activities/activity'],
   formTemplate: JST['activities/form'],
   errTemplate: JST['shared/errors'],

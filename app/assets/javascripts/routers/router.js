@@ -22,6 +22,7 @@ ActoExplaino.Routers.Router = Backbone.Router.extend({
       model: activity,
       user: ActoExplaino.user
     });
+    activityView.$el.addClass('active');
     this._swapView(activityView);
   },
 

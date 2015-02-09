@@ -1,11 +1,14 @@
 <% if (user.id) { %>
-  Your Activites:
-  <form id="new">
-    <input type="text" name="title" value="" placeholder="Enter title...">
-    <input type="submit" class="btn btn-default btn-sm" value="Add Activity">
-  </form>
+  <h4>Your Activites: </h4>
   <div class='errors'></div>
-  <ul class='activities'></ul>
+  <form  id="new">
+    <div class='activity-form'>
+      <label class='sr-only' for="activity">Activity</label>
+      <input class="form-control" type="text" name="title" value="" placeholder="Enter title...">
+    </div>
+    <input type="submit" class="btn btn-success btn-sm" value="Add Activity">
+  </form>
+  <div class='activities'></div>
 <% } else { %>
   Popular Matches:
   <ul class='matches'></ul>

@@ -14,7 +14,8 @@ ActoExplaino.Views.ActivityIndex = Backbone.CompositeView.extend({
   },
 
   events: {
-    'submit #new': 'createActivity'
+    'submit #new': 'createActivity',
+    'click li': 'makeSelected'
   },
 
   createActivity: function (event) {
@@ -32,6 +33,11 @@ ActoExplaino.Views.ActivityIndex = Backbone.CompositeView.extend({
         that.renderErrors(errors.responseJSON['errors']);
       }
     });
+  },
+
+  makeSelected: function (event) {
+    this.$('li').removeClass('active');
+    $(event.currentTarget).addClass('active');
   },
 
   addActivity: function (activity) {
