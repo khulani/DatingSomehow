@@ -51,7 +51,11 @@
   margin: 0 auto;
   position: relative;
   border: 2px solid gray;
-  background: black;
+  background: whitesmoke;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
 }
 
 .timeline-window-inner {
@@ -63,12 +67,13 @@
 .occurrence-new {
   position: absolute;
   left: 30px;
+  width: 200px;
   background: rgba(255, 245, 255, 0.9);
   padding: 10px 10px 10px 10px;
   border: 2px solid gray;
   border-radius: 10px;
   z-index: 2;
-  box-shadow: 0 1px 20px rgba(6, 255, 0, 0.77);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
 
 .timeline-bar {
@@ -81,19 +86,6 @@
   width: 100%;
 }
 
-.timeline-top {
-  height: 40px;
-  background: linear-gradient(to right, white, rgba(182, 192, 245, 0.35), white);
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
-
-.timeline-bot {
-  height: 40px;
-  background: linear-gradient(to right, white, rgba(182, 192, 245, 0.35), white);
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-}
 
 .scroll-up {
   position: absolute;
@@ -117,11 +109,29 @@
   border-top: 1px dotted white;
 }
 
+.scroll:hover {
+  background: rgba(255, 255, 255, 0.3)
+}
+
 .timeline {
   position: relative;
   clear: both;
   width: 100%;
-  background: linear-gradient(to right, white, rgba(182, 192, 245, 0.35), white);
+  background: linear-gradient(to right, transparent, rgba(182, 192, 245, 0.7), transparent);
+}
+
+.timeline-top {
+  height: 40px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background: linear-gradient(to right, transparent, rgba(182, 192, 245, 0.7), transparent);
+}
+
+.timeline-bot {
+  height: 40px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  background: linear-gradient(to right, transparent, rgba(182, 192, 245, 0.7), transparent);
 }
 
 .closed {
@@ -149,7 +159,7 @@
 }
 
 .occurrence.details {
-  box-shadow: 0 1px 20px rgba(6, 255, 0, 0.77);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
 
 .occurrence.left {
@@ -199,18 +209,27 @@ button.occurrence.delete {
   background: white;
 }
 
-.open.right {
-  background: rgba(245, 255, 250, 1);
+.open {
+  height: 20px;
+  width: 20px;
   border-radius: 10px;
+  border: 2px solid lightgray;
+}
+
+.open.right {
+  background: cadetblue;
 }
 
 .open.left {
-  background: rgba(255, 245, 255, 1);
-  border-radius: 10px;
+  background: lightpink;
 }
 
 .open.pressed {
-  background: black;
+  border-color: black;
+}
+
+.open:hover {
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
 
 .occurrence.form {
@@ -258,7 +277,7 @@ button.occurrence.delete {
   left: auto;
   left: -21px;
   border-width: 9px 21px 9px 0;
-  border-color: transparent rgba(245, 255, 250, 0.8);
+  border-color: transparent rgba(245, 255, 250, 1);
 }
 
 .triangle-border.right:hover:after {
@@ -297,7 +316,7 @@ button.occurrence.delete {
   left: auto;
   right: -21px;
   border-width: 9px 0 9px 21px;
-  border-color: transparent rgba(255, 245, 255, 0.8);
+  border-color: transparent rgba(255, 245, 255, 1);
 }
 
 .triangle-border.left:hover:after {

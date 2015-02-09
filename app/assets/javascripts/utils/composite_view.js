@@ -40,6 +40,12 @@ Backbone.CompositeView = Backbone.View.extend({
         }
       }
       if (!added) {
+        var $before = $element.before();
+        if($before.attr('id')) {
+          var afterDate = $before.attr('id');
+          var height = 20 + (Math.log(new Date(afterDate) - new Date(date)) - 18)*35;
+          $before.css('height', height);
+        }
         $element.css('height', 30);
         this.$(selector).append($element);
       }

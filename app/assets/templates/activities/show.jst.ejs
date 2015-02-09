@@ -1,7 +1,14 @@
 <div id='activity-show' class='col-xs-8'>
   <div class='row'>
-    <div class='col-xs-6'><h3 class='title'><%= activity.escape('title') %></h3></div>
-    <div class='col-xs-6'><h3 class='title' id='match-title'></h3></div>
+    <div class='col-xs-6'>
+      <div class='title'><h3><%= activity.escape('title') %></h3></div>
+    </div>
+    <div class='col-xs-6'>
+      <div class='title'>
+        <h3 id='match-title'></h3>
+        <div id='match-user'></div>
+      </div>
+    </div>
   </div>
   <div class="timeline-window">
     <div class="occurrence-new triangle-border left closed">

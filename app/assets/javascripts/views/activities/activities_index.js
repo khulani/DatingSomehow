@@ -28,6 +28,7 @@ ActoExplaino.Views.ActivityIndex = Backbone.CompositeView.extend({
         that.$el.find('form')[0].reset();
         that.$el.find('.errors').empty();
         that.model.activities().add(activity);
+        Backbone.history.navigate('/activities/' + activity.id, { trigger: true });
       },
       error: function (obj, errors) {
         that.renderErrors(errors.responseJSON['errors']);

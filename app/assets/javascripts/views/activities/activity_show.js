@@ -3,7 +3,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
   errTemplate: JST['shared/errors'],
   matchTemplate: JST['matches/matches'],
 
-  initialize: function(options){
+  initialize: function(options) {
     this.user = options.user;
     if (this.user.id) {
       this.model.fetch();
@@ -11,6 +11,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this.listenTo(this.user, 'change', this.checkUser);
 
     this.listenTo(this.model, 'sync', this.render);
+    this.listenTo(this.model, 'destroy', this.remove.bind(this));
     var that = this;
     this.listenTo(this.model.occurrences(), 'add', function (occurrence) {
       that.addOccurrence(occurrence, true);
@@ -48,7 +49,14 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     'mouseleave .scroll-down': 'scrollStop',
     'mousemove .scroll-up': 'scrollUp',
     'mouseleave .scroll-up': 'scrollStop',
-    'mouseover .timeline-window': 'timelineLength'
+    'mouseover .timeline-window': 'timelineLength',
+    // 'mousewheel .timeline-window': 'scrollWheel'
+  },
+
+  remove: function () {
+    Backbone.CompositeView.prototype.remove.call(this);
+    clearInterval(this.scrolling);
+    this.$('.timeline-window').off('mousewheel');
   },
 
   timelineLength: function () {
@@ -59,11 +67,6 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     }
 
     // console.log('timeline-window');
-  },
-
-  remove: function () {
-    Backbone.CompositeView.prototype.remove.call(this);
-    clearInterval(this.scrolling);
   },
 
   scrollStop: function () {
@@ -91,14 +94,12 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     console.log("scroll: " + this._scroll);
   },
 
-  scroll: function () {
-    this._timelineShift += this._scroll
-    // console.log(this._timelineShift);
-    if (this._scroll < 0) {
+  checkScroll: function (delta) {
+    if (delta < 0) {
       if (this._timelineShift < -(this._timelineWindow / 2)) {
         this._timelineShift = -(this._timelineWindow / 2);
       }
-    } else if (this._scroll > 0) {
+    } else if (delta > 0) {
       if (this._timelineShift < 0) {
       } else if (this._timelineLength > this._timelineWindow) {
         if (this._timelineShift > this._timelineLength - this._timelineWindow / 3) {
@@ -112,6 +113,30 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
         this._timelineShift = 0;
       }
     }
+  },
+
+  scroll: function () {
+    this._timelineShift += this._scroll
+    // console.log(this._timelineShift);
+    this.checkScroll(this._scroll);
+    // if (this._scroll < 0) {
+    //   if (this._timelineShift < -(this._timelineWindow / 2)) {
+    //     this._timelineShift = -(this._timelineWindow / 2);
+    //   }
+    // } else if (this._scroll > 0) {
+    //   if (this._timelineShift < 0) {
+    //   } else if (this._timelineLength > this._timelineWindow) {
+    //     if (this._timelineShift > this._timelineLength - this._timelineWindow / 3) {
+    //       this._timelineShift = this._timelineLength - (this._timelineWindow / 3);
+    //     }
+    //   } else if (this._timelineLength > this._timelineWindow / 3) {
+    //     if (this._timelineLength - this._timelineShift < this._timelineWindow / 3 ) {
+    //       this._timelineShift = this._timelineLength - (this._timelineWindow / 3);
+    //     }
+    //   } else if (this._timelineLength < this._timelineWindow / 3) {
+    //     this._timelineShift = 0;
+    //   }
+    // }
 
     this.$('.timeline-bar').css('bottom', this._timelineShift);
   },
@@ -188,6 +213,13 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this.$('.occurrence-new').css('top', event.pageY - 200);
   },
 
+  scrollWheel: function (event) {
+    console.log('deltaY: ' + event.deltaY);
+    this._timelineShift -= event.deltaY;
+    this.checkScroll(-event.deltaY);
+    this.$('.timeline-bar').css('bottom', this._timelineShift);
+  },
+
   checkUser: function () {
     if (this.user.id) {
       this.model.fetch();
@@ -248,6 +280,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this.addOccurrence(occurrence, true);
   },
 
+  // generates a list of matching timelines
   matchList: function() {
     var matches = this.model.get('matches')
     if (matches) {
@@ -256,6 +289,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     }
   },
 
+  // shows timeline for a selected match
   matchShow: function (event) {
     event.preventDefault();
     var that = this;
@@ -271,8 +305,10 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this.match.fetch();
   },
 
+  // updates match timeline after fetched
   addMatch: function () {
     var that = this;
+    this.$('#match-user').html('(' + this.match.get('email') + ')');
     this.match.occurrences().each(function (occurrence) {
       that.addOccurrence(occurrence, false);
     });
@@ -287,16 +323,21 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
       this.$el.html(content);
       this.$el.addClass('row');
       this.$('#match-title').empty();
-      this.$('.timeline-window').css('height', this._timelineWindow);
+      var $timeWindow = this.$('.timeline-window');
+      $timeWindow.css('height', this._timelineWindow);
+      // this.listenTo($timeWindow, 'mousewheel', this.scrollWheel);
+
+      $timeWindow.on('mousewheel', this.scrollWheel.bind(this));
+
       this.$('.timeline').css('height', this._timelineWindow / 2);
       this.matchList();
       this.attachSubviews();
+      clearInterval(this.scrolling);
+      var that = this;
+      this.scrolling = setInterval(function() {
+        that.scroll();
+      }, 30);
     }
-    clearInterval(this.scrolling);
-    var that = this;
-    this.scrolling = setInterval(function() {
-      that.scroll();
-    }, 30);
     return this;
   },
 

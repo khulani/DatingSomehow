@@ -40,6 +40,10 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
     }
   },
 
+  open: function () {
+
+  },
+
   toggleDetails: function () {
     // debugger;
     // $('#' + this.model.id).dialog('open');
@@ -73,20 +77,18 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
   edit: function (event) {
     event.stopPropagation();
     if (this.editable) {
-      // if (this.editing) {
-      //   this.editing = false;
-      //   this.render();
-      // } else {
+      if (!this.editing) {
         var content = this.formTemplate({ occurrence: this.model });
         this.$('.edit-form').html(content);
         this.editing = true;
-      // }
+      }
     }
   },
 
   cancel: function (event) {
     event.preventDefault();
     this.render();
+    this.editing = false;
   },
 
   updateOccurrence: function (event) {
@@ -98,6 +100,7 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
       this.model.save(formData, {
         success: function () {
           // that.$el.find('.errors-' + that.model.id).empty();
+          this.editing = false;
           that.render();
         },
         error: function (obj, errors) {

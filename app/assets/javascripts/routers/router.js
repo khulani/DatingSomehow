@@ -16,27 +16,35 @@ ActoExplaino.Routers.Router = Backbone.Router.extend({
   },
 
   show: function (id) {
-    this._checkIndex();
-    var activity = new ActoExplaino.Models.Activity({ id: id });
-    var activityView = new ActoExplaino.Views.ActivityShow({
-      model: activity,
-      user: ActoExplaino.user
-    });
-    activityView.$el.addClass('active');
-    this._swapView(activityView);
+    if (ActoExplaino.user.id) {
+      var activity = ActoExplaino.user.activities().getOrFetch(id);
+      var activityView = new ActoExplaino.Views.ActivityShow({
+        model: activity,
+        user: ActoExplaino.user
+      });
+      this._swapView(activityView);
+    } else {
+      this._checkIndex(this.show.bind(this, id));
+    }
   },
 
-  _checkIndex: function () {
+  _checkIndex: function (callback) {
     if (!this._topView) {
-      this._topRender();
+      this._topRender(callback);
     }
     if (!this._sideView) {
       this._sideRender();
     }
   },
 
-  _topRender: function () {
-    ActoExplaino.user.fetch();
+  _topRender: function (view) {
+    ActoExplaino.user.fetch({
+      success: function () {
+        if (view) {
+          view();
+        }
+      }
+    });
     this._topView && this._topView.remove();
     this._topView = new ActoExplaino.Views.UserLogin({
       model: ActoExplaino.user
