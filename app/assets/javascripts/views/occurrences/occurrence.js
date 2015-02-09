@@ -13,6 +13,7 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
     } else {
       this.open = false;
     }
+    this.editing = false;
   },
 
   events: {
@@ -77,8 +78,14 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
   edit: function (event) {
     event.stopPropagation();
     if (this.editable) {
-      var content = this.formTemplate({ occurrence: this.model });
-      this.$('.edit-form').html(content);
+      if (this.editing) {
+        this.editing = false;
+        this.render();
+      } else {
+        var content = this.formTemplate({ occurrence: this.model });
+        this.$('.edit-form').html(content);
+        this.editing = true;
+      }
     }
   },
 

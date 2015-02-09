@@ -43,6 +43,7 @@
   margin: 0 auto;
   position: relative;
   border: 2px solid gray;
+  background: black;
 }
 
 .timeline-window-inner {
@@ -59,7 +60,7 @@
   border: 2px solid gray;
   border-radius: 10px;
   z-index: 2;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 20px rgba(6, 255, 0, 0.77);
 }
 
 .timeline-bar {
@@ -70,6 +71,20 @@
 
 .occurrences {
   width: 100%;
+}
+
+.timeline-top {
+  height: 40px;
+  background: linear-gradient(to right, white, rgba(182, 192, 245, 0.35), white);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.timeline-bot {
+  height: 40px;
+  background: linear-gradient(to right, white, rgba(182, 192, 245, 0.35), white);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 
 .scroll {
@@ -109,7 +124,7 @@
   position: relative;
   clear: both;
   width: 100%;
-  background: linear-gradient(to right, white, rgba(182, 192, 245, 0.35), white)
+  background: linear-gradient(to right, white, rgba(182, 192, 245, 0.35), white);
 }
 
 .closed {
@@ -137,7 +152,7 @@
 }
 
 .occurrence.details {
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 20px rgba(6, 255, 0, 0.77);
 }
 
 .occurrence.left {
@@ -246,7 +261,7 @@ button.occurrence.delete {
   left: auto;
   left: -21px;
   border-width: 9px 21px 9px 0;
-  border-color: transparent rgba(245, 255, 250, 1);
+  border-color: transparent rgba(245, 255, 250, 0.8);
 }
 
 .triangle-border.right:hover:after {
@@ -285,7 +300,7 @@ button.occurrence.delete {
   left: auto;
   right: -21px;
   border-width: 9px 0 9px 21px;
-  border-color: transparent rgba(255, 245, 255, 1);
+  border-color: transparent rgba(255, 245, 255, 0.8);
 }
 
 .triangle-border.left:hover:after {

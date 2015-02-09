@@ -11,11 +11,11 @@
         <input type="hidden" name="activity_id"
           value="<%= activity.id %>">
         <div class="form-group">
-          <textarea class="form-control" name="occurrence[body]"
-            placeholder="Enter description..."></textarea>
+          <input id="new-date" type="date" name="occurrence[date]" value="">
         </div>
         <div class="form-group">
-          <input id="new-date" type="date" name="occurrence[date]" value="">
+          <textarea class="form-control" name="occurrence[body]"
+            placeholder="Enter description..."></textarea>
         </div>
         <div class="form-group">
           <input class="form-control" type="text" name="occurrence[image]"
@@ -28,7 +28,9 @@
     </div>
     <div class="timeline-window-inner">
       <div class='timeline-bar'>
+        <div class='timeline-top'></div>
         <div class='occurrences'></div>
+        <div class='timeline-bot'></div>
       </div>
     </div>
     <div class="scroll scroll-up"></div>

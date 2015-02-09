@@ -34,6 +34,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this.scrolling;
     this._timelineWindow = $(window).height() * .6;
     this._timelineLength = 0;
+    this._scrolled = false;
   },
 
   events: {
@@ -70,32 +71,47 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
   },
 
   scrollUp: function (event) {
+    if (this._form) {
+      this._scrolled = true;
+      this.toggleAddForm();
+    }
+
     this._scroll = -((40 - event.offsetY) * 0.75);
   },
 
   scrollDown: function (event) {
+    if (this._form) {
+      this._scrolled = true;
+      this.toggleAddForm();
+
+    }
+
     this._scroll = event.offsetY * 0.75;
+    console.log('offsetY: ' + event.offsetY);
+    console.log("scroll: " + this._scroll);
   },
 
   scroll: function () {
     this._timelineShift += this._scroll
-    if (this._timelineShift < -(this._timelineWindow / 2)) {
-      this._timelineShift = -(this._timelineWindow / 2);
-    } else if (this._timelineLength > this._timelineWindow
-        && this._timelineShift > this._timelineLength - (this._timelineWindow / 2)) {
-          console.log('timelineShift: ' + this._timelineShift);
-          console.log('timelineLength: ' + this._timelineLength);
-          console.log('timelineWindow: ' + this._timelineWindow);
-        this._timelineShift = this._timelineLength - (this._timelineWindow / 2);
-    } else if (this._timelineShift >)
-
-    // else if ((this._timelineShift) > (this._timelineLength - (this._timelineWindow / 2))) {
-    //   console.log(this._timelineShift)
-    //   this._timelineShift = this._timelineLength - (this._timelineWindow /2);
-    //   if (this._timelineShift < 0) {
-    //     this._timelineShift = 0;
-    //   }
-    // }
+    // console.log(this._timelineShift);
+    if (this._scroll < 0) {
+      if (this._timelineShift < -(this._timelineWindow / 2)) {
+        this._timelineShift = -(this._timelineWindow / 2);
+      }
+    } else if (this._scroll > 0) {
+      if (this._timelineShift < 0) {
+      } else if (this._timelineLength > this._timelineWindow) {
+        if (this._timelineShift > this._timelineLength - this._timelineWindow / 3) {
+          this._timelineShift = this._timelineLength - (this._timelineWindow / 3);
+        }
+      } else if (this._timelineLength > this._timelineWindow / 3) {
+        if (this._timelineLength - this._timelineShift < this._timelineWindow / 3 ) {
+          this._timelineShift = this._timelineLength - (this._timelineWindow / 3);
+        }
+      } else if (this._timelineLength < this._timelineWindow / 3) {
+        this._timelineShift = 0;
+      }
+    }
 
     this.$('.timeline-bar').css('bottom', this._timelineShift);
   },
@@ -109,7 +125,10 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     event.preventDefault();
   },
 
-  toggleAddForm: function () {
+  toggleAddForm: function (event) {
+    if (event) {
+      event.stopPropagation();
+    }
     var $form = this.$('.occurrence-new');
     // var $button = this.$('.open')
     if (this._form) {
@@ -130,9 +149,14 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
 
   updatePos: function (event) {
     var $timeline;
+
+    if (this._scrolled){
+      this.toggleAddForm();
+      this._scrolled = false;
+    }
+
     if ($(event.target).attr('id')) {
       $timeline = $(event.target)
-
     } else if ($(event.target.parentElement).attr('id')) {
       $timeline = $(event.target.parentElement);
     } else {
@@ -143,7 +167,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     // console.log('dateHigh: ' + dateHigh);
     var dateHigh;
     if ($timeline.next().attr('id')) {
-      dateLow = new Date($timeline.next().attr('id'))
+      dateLow = new Date($timeline.next().attr('id'));
     //   console.log('dateLow: ' + $timeline.next().attr('id'));
     //   console.log('dateLow: ' + dateLow);
     } else {
@@ -193,7 +217,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
   },
 
   cancelForm: function (event) {
-    event.preventDefault();
+    // event.preventDefault();
     this.toggleAddForm();
   },
 
@@ -260,6 +284,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
       this.$el.html(content);
       this.$('#match-title').empty();
       this.$('.timeline-window').css('height', this._timelineWindow);
+
       this.matchList();
       this.attachSubviews();
     }
