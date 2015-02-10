@@ -12,12 +12,11 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'jbuilder', '~> 2.0'
 gem 'bcrypt', '~> 3.1.7'
-
+gem 'backbone-on-rails'
 gem 'bootstrap-sass'
 
 group :development do
   gem 'byebug'
-  gem 'backbone-on-rails'
   gem 'pry-rails'
   gem 'better_errors'
   gem 'binding_of_caller'
