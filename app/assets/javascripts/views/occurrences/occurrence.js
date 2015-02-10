@@ -133,11 +133,6 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
       this.$('.occurrence').removeClass('closed');
       this.$('.open').addClass('pressed');
     }
-    //       this.$el.height(60 + this.height * 30);
-    // this.$('div').attr('id', this.model.id);
-    // this.$('.occurrence').dialog({
-    //   autoOpen: false,
-    // });
 
     return this;
   },

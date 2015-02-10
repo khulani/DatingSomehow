@@ -49,8 +49,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     'mouseleave .scroll-down': 'scrollStop',
     'mousemove .scroll-up': 'scrollUp',
     'mouseleave .scroll-up': 'scrollStop',
-    'mouseover .timeline-window': 'timelineLength',
-    // 'mousewheel .timeline-window': 'scrollWheel'
+    'mouseover .timeline-window': 'timelineLength'
   },
 
   remove: function () {
@@ -63,10 +62,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this._timelineLength = this.$('.occurrences').height();
     if (this._timelineLength < this._timelineWindow) {
       this.$('.timeline-bar').height(this._timelineWindow);
-      // this._timelineLength = this._timelineWindow;
     }
-
-    // console.log('timeline-window');
   },
 
   scrollStop: function () {

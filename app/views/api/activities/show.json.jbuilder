@@ -8,13 +8,14 @@ json.occurrences do
   end
 end
 
-if @matches
+if @matches.length > 0
   json.matches do
     json.array! @matches do |match|
-      json.id match[0]
-      json.title match[1]
-      json.count match[2]
-      json.total match[3]
+      json.id match.id
+      json.matched_id = match.matched_activity.id
+      json.title match.matched_title
+      json.count match.matching_count
+      json.total match.matching_total
     end
   end
 end
