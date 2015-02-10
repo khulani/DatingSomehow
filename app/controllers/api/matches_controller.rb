@@ -1,10 +1,10 @@
 class Api::MatchesController < ApplicationController
 
   def index
-    if (params[:activity_id]) {
+    if params[:activity_id]
       @matches = matches(params[:activity_id]))
       render :index
-    } else {
+    else
       @matches = Matches.find_by_sql(<<-SQL)
         SELECT
           match.id, match.matching_id, match.matched_id,
@@ -24,7 +24,7 @@ class Api::MatchesController < ApplicationController
         LIMIT
           7
       SQL
-    }
+    end
   end
 
   def matches (activity_id)
