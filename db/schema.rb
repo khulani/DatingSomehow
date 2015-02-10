@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150209235830) do
+ActiveRecord::Schema.define(version: 20150210180628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,15 +25,6 @@ ActiveRecord::Schema.define(version: 20150209235830) do
 
   add_index "activities", ["title"], name: "index_activities_on_title", unique: true, using: :btree
   add_index "activities", ["user_id"], name: "index_activities_on_user_id", using: :btree
-
-  create_table "matches", force: true do |t|
-    t.integer  "matching_id", null: false
-    t.integer  "matched_id",  null: false
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  add_index "matches", ["matching_id", "matched_id"], name: "index_matches_on_matching_id_and_matched_id", unique: true, using: :btree
 
   create_table "occurrences", force: true do |t|
     t.date     "date",        null: false
@@ -59,18 +50,18 @@ ActiveRecord::Schema.define(version: 20150209235830) do
   add_index "users", ["session_token"], name: "index_users_on_session_token", using: :btree
 
   create_table "votes", force: true do |t|
-    t.integer  "match_id"
+    t.integer  "matching_id", null: false
+    t.integer  "matched_id",  null: false
     t.integer  "user_id"
     t.integer  "vote"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
-  add_index "votes", ["match_id"], name: "index_votes_on_match_id", using: :btree
+  add_index "votes", ["matching_id", "matched_id"], name: "index_votes_on_matching_id_and_matched_id", using: :btree
   add_index "votes", ["user_id"], name: "index_votes_on_user_id", using: :btree
 
   add_foreign_key "activities", "users"
   add_foreign_key "occurrences", "activities"
-  add_foreign_key "votes", "matches"
   add_foreign_key "votes", "users"
 end

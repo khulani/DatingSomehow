@@ -7,6 +7,7 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
   initialize: function (options) {
     this.height = 0;
     this.editable = options.editable;
+    this.comparing = options.comparing;
     if (options.open) {
       this.open = options.open;
 
@@ -112,21 +113,27 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
 
   remove: function () {
     Backbone.View.prototype.remove.call(this);
-    if (this.editable){
-      this.$('editable').empty();
-    } else {
-      this.$('uneditable').empty();
-    }
+    // if (this.comparing){
+    //   this.$('.right-side').empty();
+    // } else {
+    //   this.$('.left-side').empty();
+    // }
   },
 
   render: function () {
-    if (this.editable) {
-      var content = this.templateEdit({ occurrence: this.model });
-      this.$el.addClass('editable')
+    var content;
+    if (this.comparing) {
+      content = this.template({ occurrence: this.model });
+      this.$el.addClass('right-side')
     } else {
-      var content = this.template({ occurrence: this.model });
-      this.$el.addClass('uneditable')
+      content = this.templateEdit({ occurrence: this.model, editable: this.editable });
+      this.$el.addClass('left-side')
     }
+
+    if (this.comparing) {
+    } else {
+    }
+
     this.$el.html(content);
 
     if (this.open) {

@@ -23,31 +23,44 @@ Backbone.CompositeView = Backbone.View.extend({
 
       var occurrences = this.$('.timeline');
       for (var i = 0; i < occurrences.length; i++) {
-        var beforeDate = $(occurrences[i]).attr('id');
-        if (date > beforeDate) {
-          if (!added) {
-            $(occurrences[i]).before($element);
-            added = true;
+        if ($.trim($(occurrences[i]).html()) == '') {
+          // $(occurrences[i]).append('should be empty');
+          $(occurrences[i]).animate(
+            { "height" : "0" }
+            // { "complete" : function() { $(occurrences[i]).remove(); i--; } }
+          );
+        } else {
+          var beforeDate = $(occurrences[i]).attr('id');
+          if (date > beforeDate) {
+            if (!added) {
+              $(occurrences[i]).before($element);
+              added = true;
+            }
+            var height = 20 + (Math.log(new Date(date) - new Date(beforeDate)) - 18)*35;
+            // $element.css('height', height);
+            $element.animate({'height': height});
+            if (i>0) {
+              var afterDate = $(occurrences[i-1]).attr('id');
+              var height = 20 + (Math.log(new Date(afterDate) - new Date(date)) - 18)*35;
+              // $(occurrences[i-1]).css('height', height);
+              $(occurrences[i-1]).animate({'height': height});
+            }
+            break;
           }
-          var height = 20 + (Math.log(new Date(date) - new Date(beforeDate)) - 18)*35;
-          $element.css('height', height);
-          if (i>0) {
-            var afterDate = $(occurrences[i-1]).attr('id');
-            var height = 20 + (Math.log(new Date(afterDate) - new Date(date)) - 18)*35;
-            $(occurrences[i-1]).css('height', height);
-          }
-          break;
         }
       }
       if (!added) {
-        var $before = $element.before();
+        this.$(selector).append($element);
+        var $before = $element.prev();
+
         if($before.attr('id')) {
           var afterDate = $before.attr('id');
           var height = 20 + (Math.log(new Date(afterDate) - new Date(date)) - 18)*35;
-          $before.css('height', height);
+          // $before.css('height', height);
+          $before.animate({'height': height});
         }
-        $element.css('height', 30);
-        this.$(selector).append($element);
+        // $element.css('height', 30);
+        $element.animate({'height': 30});
       }
     } else {
       this.$(selector).prepend(subview.$el);

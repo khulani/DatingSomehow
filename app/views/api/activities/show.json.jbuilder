@@ -11,11 +11,12 @@ end
 if @matches.length > 0
   json.matches do
     json.array! @matches do |match|
-      json.id match.id
-      json.matched_id = match.matched_activity.id
-      json.title match.matched_title
-      json.count match.matching_count
-      json.total match.matching_total
+      json.matching_id match[:matching_id]
+      json.matched_id  match[:matched_id]
+      json.matching_title match[:matching_title]
+      json.matched_title match[:matched_title]
+      json.matching_count match[:matching_count]
+      json.matching_total match[:matching_total]
     end
   end
 end

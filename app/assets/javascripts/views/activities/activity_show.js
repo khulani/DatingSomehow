@@ -5,27 +5,28 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
 
   initialize: function(options) {
     this.user = options.user;
-    if (this.user.id) {
-      this.model.fetch();
-    }
+    this.editable = (this.user.id === this.model.get('user_id'));
+    // if (this.user.id) {
+    //   this.model.fetch();
+    // }
     this.listenTo(this.user, 'change', this.checkUser);
 
     this.listenTo(this.model, 'sync', this.render);
     this.listenTo(this.model, 'destroy', this.remove.bind(this));
     var that = this;
     this.listenTo(this.model.occurrences(), 'add', function (occurrence) {
-      that.addOccurrence(occurrence, true);
+      that.addOccurrence(occurrence, false);
     });
     this.listenTo(this.model.occurrences(), 'remove', this.removeOccurrence);
     this.model.occurrences().each(function (occurrence) {
-      that.addOccurrence(occurrence, true);
+      that.addOccurrence(occurrence, false);
     });
 
     this.match = new ActoExplaino.Models.Activity();
     this._matchSubs = [];
     this.listenTo(this.match, 'sync', this.addMatch);
 
-    this.listenTo($(document), 'resize', this.resize);
+    // this.listenTo($(document), 'resize', this.resize);
     // sets occurrence details to open on default
     this.open = false;
     // tracks if form is open or not
@@ -49,7 +50,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     'mouseleave .scroll-down': 'scrollStop',
     'mousemove .scroll-up': 'scrollUp',
     'mouseleave .scroll-up': 'scrollStop',
-    'mouseover .timeline-window': 'timelineLength'
+    'mousemove .timeline-window': 'timelineLength'
   },
 
   remove: function () {
@@ -74,7 +75,6 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
       this._scrolled = true;
       this.toggleAddForm();
     }
-
     this._scroll = -((40 - event.offsetY) * 0.75);
   },
 
@@ -84,10 +84,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
       this.toggleAddForm();
 
     }
-
     this._scroll = event.offsetY * 0.75;
-    console.log('offsetY: ' + event.offsetY);
-    console.log("scroll: " + this._scroll);
   },
 
   checkScroll: function (delta) {
@@ -113,14 +110,8 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
 
   scroll: function () {
     this._timelineShift += this._scroll
-    // console.log(this._timelineShift);
     this.checkScroll(this._scroll);
     this.$('.timeline-bar').css('bottom', this._timelineShift);
-  },
-
-  resize: function () {
-    debugger;
-    // this.$('.occurrences').css('height', $(window).height() * .6);
   },
 
   preventSelect: function (event) {
@@ -131,17 +122,15 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     if (event) {
       event.stopPropagation();
     }
-    var $form = this.$('.occurrence-new');
-    // var $button = this.$('.open')
-    if (this._form) {
-      // $button.removeClass('pressed');
-      $form.addClass('closed');
-      this._form = false;
-    } else {
-      // $form.css('top', event.pageY - 55);
-      $form.removeClass('closed');
-      // $button.addClass('pressed');
-      this._form = true;
+    if (this.editable) {
+      var $form = this.$('.occurrence-new');
+      if (this._form) {
+        $form.addClass('closed');
+        this._form = false;
+      } else {
+        $form.removeClass('closed');
+        this._form = true;
+      }
     }
   },
 
@@ -165,27 +154,18 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
       $timeline = $(event.target.parentElement.parentElement);
     }
     var dateHigh = new Date($timeline.attr('id'));
-    // console.log('dateHigh: ' + $timeline.attr('id'));
-    // console.log('dateHigh: ' + dateHigh);
     var dateHigh;
     if ($timeline.next().attr('id')) {
       dateLow = new Date($timeline.next().attr('id'));
-    //   console.log('dateLow: ' + $timeline.next().attr('id'));
-    //   console.log('dateLow: ' + dateLow);
     } else {
       dateLow = dateHigh;
     }
     var height = parseFloat($timeline.css('height'));
-
     var pct = event.offsetY / height;
-    // console.log(pct);
-
     var days = Math.floor(pct * (dateHigh - dateLow) / (3600 * 24 * 1000));
-    // console.log(days);
     dateHigh.setDate(dateHigh.getDate() - days + 1);
     var dateStr = dateHigh.getFullYear() + '-' + this.padStr(dateHigh.getMonth() + 1)
       + '-' + this.padStr(dateHigh.getDate());
-    // console.log(dateStr);
     this.$('#new-date').val(dateStr);
     this.$('.occurrence-new').css('top', event.pageY - 200);
   },
@@ -213,8 +193,6 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     var occurrence = new ActoExplaino.Models.Occurrence(formData);
     occurrence.save({},{
       success: function () {
-        that.$el.find('form')[0].reset();
-        that.$el.find('.errors').empty();
         that.open = true;
         that.model.occurrences().add(occurrence);
         that.toggleAddForm();
@@ -230,11 +208,12 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this.toggleAddForm();
   },
 
-  addOccurrence: function (occurrence, editable) {
+  addOccurrence: function (occurrence, comparing) {
     this.listenTo(occurrence, 'change:date', this.reorderOccurrence);
     var occurrenceView = new ActoExplaino.Views.Occurrence({
       model: occurrence,
-      editable: editable,
+      editable: this.editable,
+      comparing: comparing,
       open: this.open
     });
     this.addSubview('.occurrences', occurrenceView);
@@ -273,7 +252,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this._matchSubs.forEach(function (matchSub) {
       that.removeSubview('.occurrences', matchSub);
     });
-    this.$('.uneditable').remove();
+    this.$('.right-side').remove();
     this._matchSubs = [];
     var title = $(event.currentTarget).data('title');
     this.$('#match-title').html(title);
@@ -287,7 +266,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     var that = this;
     this.$('#match-user').html('(' + this.match.get('email') + ')');
     this.match.occurrences().each(function (occurrence) {
-      that.addOccurrence(occurrence, false);
+      that.addOccurrence(occurrence, true);
     });
   },
 

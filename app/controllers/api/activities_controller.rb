@@ -13,7 +13,7 @@ class Api::ActivitiesController < ApplicationController
 
   def show
     @activity = Activity.find(params[:id])
-    @matches = @activity.generate_matches if @activity.user == current_user
+    @matches = @activity.generate_matches
     render :show
   end
 

@@ -12,7 +12,7 @@ ActoExplaino.Models.User = Backbone.Model.extend({
 
   activities: function () {
     if (!this._activities) {
-      this._activities = new ActoExplaino.Collections.Activities;
+      this._activities = new ActoExplaino.Collections.Activities();
     }
     return this._activities;
   }

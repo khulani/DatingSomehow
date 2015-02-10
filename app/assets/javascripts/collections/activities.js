@@ -12,7 +12,9 @@ ActoExplaino.Collections.Activities = Backbone.Collection.extend({
       activity = new ActoExplaino.Models.Activity({ id: id });
       activity.fetch({
         success: function () {
-          activities.add(activity);
+          if (ActoExplaino.user.id === activity.get('user_id')) {
+            activities.add(activity);
+          }
         }
       });
     }

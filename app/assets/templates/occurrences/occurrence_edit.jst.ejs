@@ -7,9 +7,11 @@
     <div class='occurrence body'>
       <%= occurrence.escape('body') %>
     </div>
-    <div class='occurrence delete'>
-      <button class='occurrence delete btn btn-danger btn-xs' >Delete</button>
-    </div>
+    <% if (editable) { %>
+      <div class='occurrence delete'>
+        <button class='occurrence delete btn btn-danger btn-xs' >Delete</button>
+      </div>
+    <% } %>
   </div>
   <div id="errors-<%= occurrence.id %>"></div>
 </div>

@@ -5,13 +5,13 @@ class Activity < ActiveRecord::Base
   belongs_to :user
 
   has_many :occurrences, dependent: :destroy
-  has_many :matches, foreign_key: :matching_id
-  has_many :matched_activities, through: :matches, source: :matched_activity
-  has_many :matching_activities, through: :matches, source: :matching_activity
 
-  has_many :votes
+  # has_many :votes, dependent: :destroy
 
   def generate_matches
+    # Occurrence.where(
+    #  date: a.occurrences.map { |occurrence| occurrence.date }).where.not(
+    #  activity_id: a.id).includes(:activity)
     matches_data = self.class.find_by_sql(<<-SQL)
       SELECT
       two.id id, two.title title,
@@ -56,12 +56,21 @@ class Activity < ActiveRecord::Base
 
     updated_matches = []
     matches_data.each do |match_data|
-      match = matches.find_or_create_by(matched_id: match_data.id)
-      match.matching_count = match_data.match_count
-      match.matching_total = match_data.total
-      match.matched_title = match_data.title
+      match = {
+        matching_id: self.id,
+        matched_id: match_data.id,
+        matching_count: match_data.match_count,
+        matching_total: match_data.total,
+        matching_title: self.title,
+        matched_title: match_data.title
+      }
+      vote = Vote.where({ matching_id: self.id, matched_id: match_data.id })
+      if vote.length > 0
+        match[:vote] = vote
+      end
       updated_matches << match
     end
+
     updated_matches
   end
 end
