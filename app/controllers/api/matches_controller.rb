@@ -2,7 +2,7 @@ class Api::MatchesController < ApplicationController
 
   def index
     if params[:activity_id]
-      @matches = matches(params[:activity_id]))
+      @matches = matches(params[:activity_id])
       render :index
     else
       @matches = Matches.find_by_sql(<<-SQL)
