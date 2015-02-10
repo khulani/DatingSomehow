@@ -1,9 +1,15 @@
 <% matches.forEach( function (match) { %>
-  <li>
-    <%= (100 * match.count / match.total).toFixed(2) %>%:
+  <div class='match-pct'>
+    <b><%= (100 * match.count / match.total).toFixed(2) %>%:</b>
+  </div>
+  <div class='panel'>
     <a data-id="<%= match.id %>" href="#/activity/<%= match.id %>"
       data-title="<%= match.title %>" id="match">
       <%= match.title %>
     </a>
-  </li>
+  </div>
+  <div class='vote-buttons'>
+    <button class='vote-up'>^</button>
+    <button class='vote-up'>v</button>
+  </div>
 <% }) %>

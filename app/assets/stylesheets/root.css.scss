@@ -10,18 +10,21 @@
   height: 0;
 }
 
-.alert {
-  margin-bottom: 0;
-  padding: 10px;
-}
-
 .section {
   float: left;
   padding: 10px 10px;
 }
 
+form#new {
+  margin-bottom: 10px;
+}
+
 .activity-form {
   margin: 10px 0px 5px 0px;
+}
+
+.actitivies {
+  margin-top: 10px;
 }
 
 #activity-show {
@@ -66,8 +69,8 @@
 
 .occurrence-new {
   position: absolute;
-  left: 30px;
-  width: 200px;
+  left: 20px;
+  width: 210px;
   background: rgba(255, 245, 255, 0.9);
   padding: 10px 10px 10px 10px;
   border: 2px solid gray;
@@ -95,7 +98,7 @@
   right: 0;
   width: 40px;
   height: 40px;
-  border-bottom: 1px dotted white;
+  border-bottom: 1px dotted rgb(186, 186, 186);
 }
 
 .scroll-down {
@@ -106,32 +109,33 @@
   bottom: 0px;
   width: 40px;
   height: 40px;
-  border-top: 1px dotted white;
+  border-top: 1px dotted rgb(186, 186, 186);
 }
 
 .scroll:hover {
-  background: rgba(255, 255, 255, 0.3)
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0px 1px rgba(0, 0, 0, 0.1);
 }
 
 .timeline {
   position: relative;
   clear: both;
   width: 100%;
-  background: linear-gradient(to right, transparent, rgba(182, 192, 245, 0.7), transparent);
+  background: linear-gradient(to right, transparent 30%, rgba(182, 192, 245, 0.7), transparent 70%);
 }
 
 .timeline-top {
   height: 40px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  background: linear-gradient(to right, transparent, rgba(182, 192, 245, 0.7), transparent);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  background: linear-gradient(to right, transparent 30%, rgba(182, 192, 245, 0.7), transparent 70%);
 }
 
 .timeline-bot {
   height: 40px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  background: linear-gradient(to right, transparent, rgba(182, 192, 245, 0.7), transparent);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  background: linear-gradient(to right, transparent 30%, rgba(182, 192, 245, 0.7), transparent 70%);
 }
 
 .closed {
@@ -236,8 +240,13 @@ button.occurrence.delete {
   padding: 10px 10px 10px 10px;
 }
 
+.match-panel {
+  margin-top: 5px;
+}
 
-
+.match-pct {
+  color: crimson;
+}
 
 .triangle-border:before {
   content:"";

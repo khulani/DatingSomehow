@@ -16,3 +16,16 @@
 
  @import "bootstrap-sprockets";
  @import "bootstrap";
+
+
+ .panel {
+   margin-bottom: 0px;
+   border: 0px;
+   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+ }
+
+ .alert {
+   padding: 5px;
+   padding-right: 35px;
+   margin-bottom: 0px;
+ }

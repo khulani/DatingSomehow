@@ -119,25 +119,6 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this._timelineShift += this._scroll
     // console.log(this._timelineShift);
     this.checkScroll(this._scroll);
-    // if (this._scroll < 0) {
-    //   if (this._timelineShift < -(this._timelineWindow / 2)) {
-    //     this._timelineShift = -(this._timelineWindow / 2);
-    //   }
-    // } else if (this._scroll > 0) {
-    //   if (this._timelineShift < 0) {
-    //   } else if (this._timelineLength > this._timelineWindow) {
-    //     if (this._timelineShift > this._timelineLength - this._timelineWindow / 3) {
-    //       this._timelineShift = this._timelineLength - (this._timelineWindow / 3);
-    //     }
-    //   } else if (this._timelineLength > this._timelineWindow / 3) {
-    //     if (this._timelineLength - this._timelineShift < this._timelineWindow / 3 ) {
-    //       this._timelineShift = this._timelineLength - (this._timelineWindow / 3);
-    //     }
-    //   } else if (this._timelineLength < this._timelineWindow / 3) {
-    //     this._timelineShift = 0;
-    //   }
-    // }
-
     this.$('.timeline-bar').css('bottom', this._timelineShift);
   },
 

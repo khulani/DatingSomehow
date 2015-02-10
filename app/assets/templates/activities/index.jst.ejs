@@ -1,7 +1,7 @@
 <% if (user.id) { %>
-  <h4>Your Activites: </h4>
+  <h4>Activites:</h4>
   <div class='errors'></div>
-  <form  id="new">
+  <form id="new">
     <div class='activity-form'>
       <label class='sr-only' for="activity">Activity</label>
       <input class="form-control" type="text" name="title" value="" placeholder="Enter title...">
@@ -10,6 +10,6 @@
   </form>
   <div class='activities'></div>
 <% } else { %>
-  Popular Matches:
-  <ul class='matches'></ul>
+  <h4>Top Matches:</h4>
+  <div class='matches'></div>
 <% } %>
