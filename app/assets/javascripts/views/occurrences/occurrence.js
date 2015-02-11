@@ -92,7 +92,6 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
   },
 
   updateOccurrence: function (event) {
-    debugger;
     if (this.editable) {
       var that = this;
       event.preventDefault();
@@ -100,7 +99,7 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
       this.model.save(formData, {
         success: function () {
           // that.$el.find('.errors-' + that.model.id).empty();
-          this.editing = false;
+          that.editing = false;
           that.render();
         },
         error: function (obj, errors) {

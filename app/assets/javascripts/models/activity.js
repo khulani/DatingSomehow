@@ -23,7 +23,7 @@ ActoExplaino.Models.Activity = Backbone.Model.extend({
 
   matches: function () {
     if (!this._matches) {
-      this._matches = new ActoExplaino.Collections.Matches({ activity: this });
+      this._matches = new ActoExplaino.Collections.Matches([],{ activityId: this.id });
     }
     return this._matches;
   }

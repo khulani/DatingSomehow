@@ -111,7 +111,25 @@ Backbone.CompositeView = Backbone.View.extend({
   },
 
   removeSubview: function (selector, subview) {
-    subview.remove();
+
+    if (selector === '.occurrences') {
+      var $parent = subview.$el.parent()
+      subview.remove();
+      
+      if ($.trim($parent.html()) === '') {
+        $parent.animate(
+          { "height" : "0" },
+          { "complete" : function () {
+              if ($.trim($parent.html()) === '') {
+                $parent.remove();
+              }
+            }
+          }
+        );
+      }
+    } else {
+      subview.remove();
+    }
 
     var subviews = this.subviews(selector);
     subviews.splice(subviews.indexOf(subview), 1);

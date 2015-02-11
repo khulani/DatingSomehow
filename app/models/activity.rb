@@ -64,10 +64,6 @@ class Activity < ActiveRecord::Base
         matching_title: self.title,
         matched_title: match_data.title
       }
-      vote = Vote.where({ matching_id: self.id, matched_id: match_data.id })
-      if vote.length > 0
-        match[:vote] = vote
-      end
       updated_matches << match
     end
 

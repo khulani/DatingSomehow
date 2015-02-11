@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   after_initialize :ensure_session_token
 
   has_many :activities, dependent: :destroy
+  has_many :votes, dependent: :destroy
 
   def self.generate_session_token
     SecureRandom::urlsafe_base64

@@ -1,14 +1,10 @@
 ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
   template: JST['activities/show'],
   errTemplate: JST['shared/errors'],
-  matchTemplate: JST['matches/matches'],
 
   initialize: function(options) {
     this.user = options.user;
     this.editable = (this.user.id === this.model.get('user_id'));
-    // if (this.user.id) {
-    //   this.model.fetch();
-    // }
     this.listenTo(this.user, 'change', this.checkUser);
 
     this.listenTo(this.model, 'sync', this.render);
@@ -28,8 +24,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this._matchSubs = [];
     this.listenTo(this.match, 'sync', this.addMatch);
 
-    // this.listenTo($(document), 'resize', this.resize);
-    // sets occurrence details to open on default
+    // for setting occurrence details to open on default
     this.open = false;
     // tracks if form is open or not
     this._form = false;
@@ -107,6 +102,8 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     occurrence.save({}, {
       success: function () {
         that.open = true;
+        that.$('.errors').empty();
+
         that.model.occurrences().add(occurrence);
         that.toggleAddForm();
         that.model.matches().fetch();
@@ -142,18 +139,31 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
       }
     );
     this.removeSubview('.occurrences', occurrenceView);
+    this.model.matches().fetch();
   },
 
   reorderOccurrence: function (occurrence) {
     this.removeOccurrence(occurrence);
     this.open = true;
-    this.addOccurrence(occurrence, true);
+    this.addOccurrence(occurrence, false);
   },
 
   // generates a list of matching timelines
   matchList: function() {
-    var content = this.matchTemplate({ matches: this.model.matches() });
-    this.$('#match-list').html(content);
+    var that = this;
+    matchItems = this.subviews('#match-list')
+    matchItems.forEach(function (subview) {
+      that.removeSubview('#match-list', subview);
+    });
+    this.$('#match-list').empty();
+
+      // debugger
+    this.model.matches().each(function (match) {
+        var matchItem = new ActoExplaino.Views.MatchItem({
+          model: match
+        });
+        that.addSubview('#match-list', matchItem);
+    });
   },
 
   // shows timeline for a selected match

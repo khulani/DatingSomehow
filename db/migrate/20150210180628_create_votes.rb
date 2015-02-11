@@ -4,7 +4,7 @@ class CreateVotes < ActiveRecord::Migration
       t.integer :matching_id, null: false
       t.integer :matched_id, null: false
       t.references :user, index: true
-      t.integer :vote
+      t.integer :value
 
       t.timestamps null: false
     end

@@ -1,4 +1,3 @@
-<% matches.each( function (match) { %>
   <div class='match-pct'>
     <b>
       <%= (100 * match.escape('matching_count') / match.escape('matching_total')).toFixed(2) %>%:
@@ -14,9 +13,8 @@
   <div class='vote-buttons'>
     <button data-matching-id="<%= match.escape('matching_id') %>"
             data-matched-id="<%= match.escape('matched_id') %>"
-            data-vote="1" class='vote vote-up'>^</button>
+            data-value="1" class='vote vote-up'>^</button>
     <button data-matching-id="<%= match.escape('matching_id') %>"
             data-matched-id="<%= match.escape('matched_id') %>"
-            data-vote="-1" class='vote vote-up'>^</button>
+            data-value="-1" class='vote vote-down'>v</button>
   </div>
-<% }) %>

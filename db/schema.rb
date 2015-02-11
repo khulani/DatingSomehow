@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 20150210180628) do
     t.integer  "matching_id", null: false
     t.integer  "matched_id",  null: false
     t.integer  "user_id"
-    t.integer  "vote"
+    t.integer  "value"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end

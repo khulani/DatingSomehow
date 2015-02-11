@@ -2,7 +2,10 @@ class Api::VotesController < ApplicationController
   before_action :ensure_logged_in
 
   def create
-    @vote = current_user.votes.new(votes_params)
+    @vote = current_user.votes.find_or_initialize_by(votes_params) do |user|
+      user.value = params[:value]
+    end
+
     if (@vote.save)
       render json: @vote
     else
@@ -22,6 +25,6 @@ class Api::VotesController < ApplicationController
   private
 
   def votes_params
-    params.require(:vote).permit(:vote, :matching_id, :match_id)
+    params.permit(:matching_id, :matched_id)
   end
 end
