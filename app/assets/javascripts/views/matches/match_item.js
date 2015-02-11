@@ -6,7 +6,8 @@ ActoExplaino.Views.MatchItem = Backbone.View.extend({
     'click .vote': 'vote'
   },
 
-  initialize: function () {
+  initialize: function (options) {
+    this.top = options.top
   },
 
   vote: function (event) {
@@ -21,14 +22,17 @@ ActoExplaino.Views.MatchItem = Backbone.View.extend({
       value: value
     });
 
+    var that = this;
     newVote.save({}, {
-      success: function () {
-        if (value > 0 ) {
+      success: function (voted) {
+        if (voted.get('value') > 0 ) {
           $voteButton.addClass('voted');
           $voteButton.next().removeClass('voted');
-        } else {
+        } else if (voted.get('value') < 0) {
           $voteButton.addClass('voted');
           $voteButton.prev().removeClass('voted');
+        } else {
+          that.$('.vote-buttons button').removeClass('voted');
         }
       }
     });
@@ -40,7 +44,7 @@ ActoExplaino.Views.MatchItem = Backbone.View.extend({
   },
 
   render: function () {
-    var content = this.template({ match: this.model });
+    var content = this.template({ match: this.model, top: this.top });
     this.$el.html(content);
     if (this.model.get('vote_value') > 0 ) {
       this.$('.vote-up').addClass('voted');

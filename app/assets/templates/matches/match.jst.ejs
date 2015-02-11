@@ -4,16 +4,31 @@
     </b>
   </div>
   <div class='panel'>
-    <a data-id="<%= match.escape('matched_id') %>"
-       href="#/activities/<%= match.escape('matched_id') %>"
-       data-title="<%= match.escape('matched_title') %>" id="match">
-      <%= match.escape('matched_title') %>
-    </a>
+    <% if (top) { %>
+      <a href=
+        "#/activities/<%= match.escape('matching_id') %>/matched/<%= match.escape('matched_id') %>"
+         id="match">
+        <%= match.escape('matching_title') %>
+      </a>
+      with: <%= match.escape('matching_title') %>
+    <% } else { %>
+      <a data-id="<%= match.escape('matched_id') %>"
+        href="#/activities/<%= match.escape('matched_id') %>"
+        data-title="<%= match.escape('matched_title') %>" id="match">
+        <%= match.escape('matched_title') %>
+      </a>
+    <% } %>
   </div>
   <div class='vote-buttons'>
+    <% if (top) { %>
+      <%= match.escape('ups') %>:
+    <% } %>
     <button data-matching-id="<%= match.escape('matching_id') %>"
             data-matched-id="<%= match.escape('matched_id') %>"
             data-value="1" class='vote vote-up'>^</button>
+    <% if (top) { %>
+      <%= match.escape('ups') %>:
+      <% } %>
     <button data-matching-id="<%= match.escape('matching_id') %>"
             data-matched-id="<%= match.escape('matched_id') %>"
             data-value="-1" class='vote vote-down'>v</button>

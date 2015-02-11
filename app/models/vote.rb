@@ -6,7 +6,48 @@ class Vote < ActiveRecord::Base
   belongs_to :matching_activity, class_name: :Activity, foreign_key: :matching_id
   belongs_to :matched_activity, class_name: :Activity, foreign_key: :matched_id
 
-  def self.top_matches
-    # Vote.where(value: -1).group(:matching_id, :matched_id).join(:votes).where(value: 1).grou
+  def self.top_voted
+    Vote.group(:matching_id, :matched_id, :value).order(count: :desc).limit(10).count(:id)
+
+    votes = Vote.find_by_sql(<<-SQL)
+      SELECT
+        up.matching_id, up.matched_id, count(up.value) ups, count(down.value) downs
+      FROM (
+        SELECT
+          matching_id, matched_id, value
+        FROM
+          votes
+        WHERE
+          value = 1
+      ) up
+      FULL OUTER JOIN (
+        SELECT
+          matching_id, matched_id, value
+        FROM
+          votes
+        WHERE
+          value = -1
+      ) down ON up.matching_id = down.matching_id AND up.matched_id = down.matched_id
+      GROUP BY
+        up.matching_id, up.matched_id
+      ORDER BY
+        count(up.value) - count(down.value) DESC
+      LIMIT
+        10
+    SQL
+
+    top_votes = []
+    votes.each do |vote|
+      top_votes << {
+        matching_id: vote.matching_id,
+        matched_id: vote.matched_id,
+        ups: vote.ups,
+        downs: vote.downs,
+        matching_title: Activity.find(vote.matching_id).title,
+        matched_title: Activity.find(vote.matched_id).title
+      }
+    end
+
+    top_votes
   end
 end

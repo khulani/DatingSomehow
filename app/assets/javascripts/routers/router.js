@@ -16,16 +16,16 @@ ActoExplaino.Routers.Router = Backbone.Router.extend({
   },
 
   show: function (id) {
-    if (ActoExplaino.user.id) {
-      var activity = ActoExplaino.user.activities().getOrFetch(id);
-      var activityView = new ActoExplaino.Views.ActivityShow({
-        model: activity,
-        user: ActoExplaino.user
-      });
-      this._swapView(activityView);
-    } else {
+    if (!ActoExplaino.user.id) {
       this._checkIndex(this.show.bind(this, id));
     }
+    var activity = ActoExplaino.user.activities().getOrFetch(id);
+    var activityView = new ActoExplaino.Views.ActivityShow({
+      model: activity,
+      user: ActoExplaino.user
+    });
+    this._swapView(activityView);
+    debugger;
   },
 
   _checkIndex: function (callback) {
@@ -38,11 +38,13 @@ ActoExplaino.Routers.Router = Backbone.Router.extend({
   },
 
   _topRender: function (view) {
+    var that = this;
     ActoExplaino.user.fetch({
       success: function () {
         if (view) {
           view();
         }
+        that._sideRender();
       }
     });
     this._topView && this._topView.remove();
@@ -55,9 +57,16 @@ ActoExplaino.Routers.Router = Backbone.Router.extend({
   _sideRender: function () {
     // ActoExplaino.user.fetch();
     this._sideView && this._sideView.remove();
-    this._sideView = new ActoExplaino.Views.ActivityIndex({
-      model: ActoExplaino.user
-    });
+
+    if (ActoExplaino.user.id) {
+      this._sideView = new ActoExplaino.Views.ActivityIndex({
+        model: ActoExplaino.user
+      });
+    } else {
+      this._sideView = new ActoExplaino.Views.MatchIndex(
+        collection: new ActoExplaino.Collections.Matches();
+      );
+    }
     this.$side.html(this._sideView.render().$el);
   },
 

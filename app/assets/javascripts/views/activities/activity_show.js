@@ -206,11 +206,12 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
       this.$('#match-title').empty();
       var $timeWindow = this.$('.timeline-window');
       $timeWindow.css('height', this._timelineWindow);
-      // this.listenTo($timeWindow, 'mousewheel', this.scrollWheel);
-
       $timeWindow.on('mousewheel', this.scrollWheel.bind(this));
-
       this.$('.timeline').css('height', this._timelineWindow / 2);
+
+      if (!this.editable) {
+        this.$('#add-new').prop('disabled', true);
+      }
       this.matchList();
       this.attachSubviews();
       clearInterval(this.scrolling);

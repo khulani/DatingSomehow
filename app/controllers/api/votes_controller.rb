@@ -3,11 +3,18 @@ class Api::VotesController < ApplicationController
 
   def create
     @vote = current_user.votes.find_or_initialize_by(votes_params)
-    @vote.value = params[:value];
-    if (@vote.save)
-      render json: @vote
+    if @vote.value == params[:value]
+      matching_id = @vote.matching_id;
+      matched_id = @vote.matched_id;
+      @vote.destroy();
+      render json: { matching_id: matching_id, matched_id: matched_id, value: 0 }
     else
-      render json: { errors: ["Must log in to vote"] }, status: :unauthorized
+      @vote.value = params[:value];
+      if (@vote.save)
+        render json: @vote, only: [:id, :matching_id, :matched_id, :vote]
+      else
+        render json: { errors: ["Must log in to vote"] }, status: :unauthorized
+      end
     end
   end
 
