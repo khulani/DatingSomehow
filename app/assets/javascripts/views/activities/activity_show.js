@@ -22,6 +22,8 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
       that.addOccurrence(occurrence, false);
     });
 
+    this.listenTo(this.model.matches(), 'sync', this.matchList);
+
     this.match = new ActoExplaino.Models.Activity();
     this._matchSubs = [];
     this.listenTo(this.match, 'sync', this.addMatch);
@@ -37,15 +39,17 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this._timelineWindow = $(window).height() * .6;
     this._timelineLength = 0;
     this._scrolled = false;
+    this.expanded = false;
   },
 
   events: {
+    'click #add-new': 'toggleAddForm',
+    'click #open-all': 'toggleAll',
     'click #add-submit': 'createOccurrence',
     'click #add-cancel': 'cancelForm',
     'click #match': 'matchShow',
     'mousemove .occurrences': 'updatePos',
     'dblclick .timeline-bar': 'toggleAddForm',
-    'click #activity-show': 'preventSelect',
     'mousemove .scroll-down': 'scrollDown',
     'mouseleave .scroll-down': 'scrollStop',
     'mousemove .scroll-up': 'scrollUp',
@@ -58,6 +62,164 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     clearInterval(this.scrolling);
     this.$('.timeline-window').off('mousewheel');
   },
+
+  toggleAll: function () {
+    if (this.expanded) {
+      this.expanded = false;
+      this.$('#open-all').html('+');
+      this.subviews('.occurrences').forEach( function (subview) {
+        if (subview.isOpen()) {
+          subview.toggleDetails();
+        }
+      });
+    } else {
+      this.expanded = true;
+      this.$('#open-all').html('-');
+      this.subviews('.occurrences').forEach( function (subview) {
+        if (!subview.isOpen()) {
+          subview.toggleDetails();
+        }
+      });
+    }
+  },
+
+  toggleAddForm: function (event) {
+    if (event) {
+      event.stopPropagation();
+    }
+    if (this.editable) {
+      var $form = this.$('.occurrence-new');
+      if (this._form) {
+        $form.addClass('closed');
+        this._form = false;
+      } else {
+        $form.removeClass('closed');
+        this._form = true;
+      }
+    }
+  },
+
+  createOccurrence: function (event) {
+    var that = this;
+    event.preventDefault();
+    var formData = $(event.target.parentElement).serializeJSON();
+    var occurrence = new ActoExplaino.Models.Occurrence(formData);
+    occurrence.save({}, {
+      success: function () {
+        that.open = true;
+        that.model.occurrences().add(occurrence);
+        that.toggleAddForm();
+        that.model.matches().fetch();
+      },
+      error: function (obj, errors) {
+        that.renderErrors(errors.responseJSON['errors']);
+      }
+    });
+  },
+
+  cancelForm: function (event) {
+    event.preventDefault();
+    this.toggleAddForm();
+  },
+
+  addOccurrence: function (occurrence, comparing) {
+    this.listenTo(occurrence, 'change:date', this.reorderOccurrence);
+    var occurrenceView = new ActoExplaino.Views.Occurrence({
+      model: occurrence,
+      editable: this.editable,
+      comparing: comparing,
+      open: this.open || this.expanded
+    });
+    this.addSubview('.occurrences', occurrenceView);
+    this.open = false;
+  },
+
+  removeOccurrence: function (occurrence) {
+    var occurrenceView = _.find(
+      this.subviews('.occurrences'),
+      function (subview) {
+        return subview.model === occurrence;
+      }
+    );
+    this.removeSubview('.occurrences', occurrenceView);
+  },
+
+  reorderOccurrence: function (occurrence) {
+    this.removeOccurrence(occurrence);
+    this.open = true;
+    this.addOccurrence(occurrence, true);
+  },
+
+  // generates a list of matching timelines
+  matchList: function() {
+    var content = this.matchTemplate({ matches: this.model.matches() });
+    this.$('#match-list').html(content);
+  },
+
+  // shows timeline for a selected match
+  matchShow: function (event) {
+    event.preventDefault();
+    var that = this;
+    this._matchSubs.forEach(function (matchSub) {
+      that.removeSubview('.occurrences', matchSub);
+    });
+    this.$('.right-side').remove();
+    this._matchSubs = [];
+    var title = $(event.currentTarget).data('title');
+    var $title = $('<a>');
+    var id = $(event.currentTarget).data('id');
+    $title.attr('href', '#/activities/' + id);
+    $title.html(title);
+    this.$('#match-title').html($title);
+    this.match.set({ id: id });
+    this.match.fetch();
+  },
+
+  // updates match timeline after fetched
+  addMatch: function () {
+    var that = this;
+    this.$('#match-user').html('(' + this.match.get('email') + ')');
+    this.match.occurrences().each(function (occurrence) {
+      that.addOccurrence(occurrence, true);
+    });
+  },
+
+  // *********** rendering html **************
+
+  render: function () {
+    if (this.user.id) {
+      var date = new Date;
+      var dateStr = date.getFullYear() + '-' + this.padStr(date.getMonth() + 1)
+      + '-' + this.padStr(date.getDate());
+      var content = this.template({ activity: this.model, date: dateStr});
+      this.$el.html(content);
+      this.$el.addClass('row');
+      this.$('#match-title').empty();
+      var $timeWindow = this.$('.timeline-window');
+      $timeWindow.css('height', this._timelineWindow);
+      // this.listenTo($timeWindow, 'mousewheel', this.scrollWheel);
+
+      $timeWindow.on('mousewheel', this.scrollWheel.bind(this));
+
+      this.$('.timeline').css('height', this._timelineWindow / 2);
+      this.matchList();
+      this.attachSubviews();
+      clearInterval(this.scrolling);
+      var that = this;
+      this.scrolling = setInterval(function() {
+        that.scroll();
+      }, 30);
+    }
+    return this;
+  },
+
+  renderErrors: function (errors) {
+    var content = this.errTemplate({ errors: errors });
+    this.$el.find('.errors').html(content);
+  },
+
+
+  // ********* timeline scrolling *************
 
   timelineLength: function () {
     this._timelineLength = this.$('.occurrences').height();
@@ -114,26 +276,6 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this.$('.timeline-bar').css('bottom', this._timelineShift);
   },
 
-  preventSelect: function (event) {
-    event.preventDefault();
-  },
-
-  toggleAddForm: function (event) {
-    if (event) {
-      event.stopPropagation();
-    }
-    if (this.editable) {
-      var $form = this.$('.occurrence-new');
-      if (this._form) {
-        $form.addClass('closed');
-        this._form = false;
-      } else {
-        $form.removeClass('closed');
-        this._form = true;
-      }
-    }
-  },
-
   padStr: function (i) {
     return (i < 10) ? "0" + i : "" + i;
   },
@@ -165,7 +307,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     var days = Math.floor(pct * (dateHigh - dateLow) / (3600 * 24 * 1000));
     dateHigh.setDate(dateHigh.getDate() - days + 1);
     var dateStr = dateHigh.getFullYear() + '-' + this.padStr(dateHigh.getMonth() + 1)
-      + '-' + this.padStr(dateHigh.getDate());
+    + '-' + this.padStr(dateHigh.getDate());
     this.$('#new-date').val(dateStr);
     this.$('.occurrence-new').css('top', event.pageY - 200);
   },
@@ -184,121 +326,5 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     } else {
       this.$el.empty();
     }
-  },
-
-  createOccurrence: function (event) {
-    var that = this;
-    event.preventDefault();
-    var formData = $(event.target.parentElement).serializeJSON();
-    var occurrence = new ActoExplaino.Models.Occurrence(formData);
-    occurrence.save({},{
-      success: function () {
-        that.open = true;
-        that.model.occurrences().add(occurrence);
-        that.toggleAddForm();
-      },
-      error: function (obj, errors) {
-        that.renderErrors(errors.responseJSON['errors']);
-      }
-    });
-  },
-
-  cancelForm: function (event) {
-    // event.preventDefault();
-    this.toggleAddForm();
-  },
-
-  addOccurrence: function (occurrence, comparing) {
-    this.listenTo(occurrence, 'change:date', this.reorderOccurrence);
-    var occurrenceView = new ActoExplaino.Views.Occurrence({
-      model: occurrence,
-      editable: this.editable,
-      comparing: comparing,
-      open: this.open
-    });
-    this.addSubview('.occurrences', occurrenceView);
-    this.open = false;
-  },
-
-  removeOccurrence: function (occurrence) {
-    var occurrenceView = _.find(
-      this.subviews('.occurrences'),
-      function (subview) {
-        return subview.model === occurrence;
-      }
-    );
-    this.removeSubview('.occurrences', occurrenceView);
-  },
-
-  reorderOccurrence: function (occurrence) {
-    this.removeOccurrence(occurrence);
-    this.open = true;
-    this.addOccurrence(occurrence, true);
-  },
-
-  // generates a list of matching timelines
-  matchList: function() {
-    var matches = this.model.get('matches')
-    if (matches) {
-      var content = this.matchTemplate({ matches: matches });
-      this.$('#match-list').append(content);
-    }
-  },
-
-  // shows timeline for a selected match
-  matchShow: function (event) {
-    event.preventDefault();
-    var that = this;
-    this._matchSubs.forEach(function (matchSub) {
-      that.removeSubview('.occurrences', matchSub);
-    });
-    this.$('.right-side').remove();
-    this._matchSubs = [];
-    var title = $(event.currentTarget).data('title');
-    this.$('#match-title').html(title);
-    var id = $(event.currentTarget).data('id');
-    this.match.set({ id: id });
-    this.match.fetch();
-  },
-
-  // updates match timeline after fetched
-  addMatch: function () {
-    var that = this;
-    this.$('#match-user').html('(' + this.match.get('email') + ')');
-    this.match.occurrences().each(function (occurrence) {
-      that.addOccurrence(occurrence, true);
-    });
-  },
-
-  render: function () {
-    if (this.user.id) {
-      var date = new Date;
-      var dateStr = date.getFullYear() + '-' + this.padStr(date.getMonth() + 1)
-        + '-' + this.padStr(date.getDate());
-      var content = this.template({ activity: this.model, date: dateStr});
-      this.$el.html(content);
-      this.$el.addClass('row');
-      this.$('#match-title').empty();
-      var $timeWindow = this.$('.timeline-window');
-      $timeWindow.css('height', this._timelineWindow);
-      // this.listenTo($timeWindow, 'mousewheel', this.scrollWheel);
-
-      $timeWindow.on('mousewheel', this.scrollWheel.bind(this));
-
-      this.$('.timeline').css('height', this._timelineWindow / 2);
-      this.matchList();
-      this.attachSubviews();
-      clearInterval(this.scrolling);
-      var that = this;
-      this.scrolling = setInterval(function() {
-        that.scroll();
-      }, 30);
-    }
-    return this;
-  },
-
-  renderErrors: function (errors) {
-    var content = this.errTemplate({ errors: errors });
-    this.$el.find('.errors').html(content);
   }
 })

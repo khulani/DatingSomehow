@@ -10,7 +10,6 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
     this.comparing = options.comparing;
     if (options.open) {
       this.open = options.open;
-
     } else {
       this.open = false;
     }
@@ -41,8 +40,8 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
     }
   },
 
-  open: function () {
-
+  isOpen: function () {
+    return this.open;
   },
 
   toggleDetails: function () {
@@ -112,12 +111,12 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
   },
 
   remove: function () {
-    Backbone.View.prototype.remove.call(this);
     // if (this.comparing){
     //   this.$('.right-side').empty();
     // } else {
     //   this.$('.left-side').empty();
     // }
+    Backbone.View.prototype.remove.call(this);
   },
 
   render: function () {

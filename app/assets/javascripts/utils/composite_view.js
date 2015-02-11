@@ -26,8 +26,13 @@ Backbone.CompositeView = Backbone.View.extend({
         if ($.trim($(occurrences[i]).html()) == '') {
           // $(occurrences[i]).append('should be empty');
           $(occurrences[i]).animate(
-            { "height" : "0" }
-            // { "complete" : function() { $(occurrences[i]).remove(); i--; } }
+            { "height" : "0" },
+            { "complete" : function () {
+                if ($.trim($(occurrences[i]).html()) == '') {
+                  $(occurrences[i]).remove();
+                }
+              }
+            }
           );
         } else {
           var beforeDate = $(occurrences[i]).attr('id');

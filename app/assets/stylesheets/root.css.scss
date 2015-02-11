@@ -54,6 +54,7 @@ form#new {
   margin: 0 auto;
   position: relative;
   border: 2px solid gray;
+  border-radius: 10px;
   background: whitesmoke;
   -moz-user-select: none;
   -khtml-user-select: none;
@@ -65,6 +66,10 @@ form#new {
   height: 100%;
   width: 100%;
   overflow: hidden;
+}
+
+.timeline-buttons {
+  margin: 10px 0px 0px 10px
 }
 
 .occurrence-new {
@@ -121,21 +126,28 @@ form#new {
   position: relative;
   clear: both;
   width: 100%;
-  background: linear-gradient(to right, transparent 30%, rgba(182, 192, 245, 0.7), transparent 70%);
+  background: linear-gradient(to right, transparent 30%, black, transparent 70%);
+}
+
+.timeline-remove {
+  position: relative;
+  clear: both;
+  width: 100%;
+  background: linear-gradient(to right, transparent 30%, black, transparent 70%);
 }
 
 .timeline-top {
   height: 40px;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
-  background: linear-gradient(to right, transparent 30%, rgba(182, 192, 245, 0.7), transparent 70%);
+  background: linear-gradient(to right, transparent 30%, black, transparent 70%);
 }
 
 .timeline-bot {
   height: 40px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  background: linear-gradient(to right, transparent 30%, rgba(182, 192, 245, 0.7), transparent 70%);
+  background: linear-gradient(to right, transparent 30%, black, transparent 70%);
 }
 
 .closed {
@@ -221,11 +233,11 @@ button.occurrence.delete {
 }
 
 .open.right {
-  background: cadetblue;
+  background: rgb(0, 188, 195);
 }
 
 .open.left {
-  background: lightpink;
+  background: rgb(255, 0, 38);
 }
 
 .open.pressed {

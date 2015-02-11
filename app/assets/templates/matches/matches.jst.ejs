@@ -1,17 +1,20 @@
-<% matches.forEach( function (match) { %>
+<% matches.each( function (match) { %>
   <div class='match-pct'>
-    <b><%= (100 * match.matching_count / match.matching_total).toFixed(2) %>%:</b>
+    <b>
+      <%= (100 * match.escape('matching_count') / match.escape('matching_total')).toFixed(2) %>%:
+    </b>
   </div>
   <div class='panel'>
-    <a data-id="<%= match.matched_id %>" href="#/activity/<%= match.matched_id %>"
-      data-title="<%= match.matched_title %>" id="match">
-      <%= match.matched_title %>
+    <a data-id="<%= match.escape('matched_id') %>"
+       href="#/activities/<%= match.escape('matched_id') %>"
+       data-title="<%= match.escape('matched_title') %>" id="match">
+      <%= match.escape('matched_title') %>
     </a>
   </div>
   <div class='vote-buttons'>
-    <button data-matching-id="<%= match.matching_id %>"
-            data-matched-id="<%= match.matched_id %>" class='vote-up'>^</button>
-    <button data-matching-id="<%= match.matching_id %>"
-            data-matched-id="<%= match.matched_id %>" class='vote-up'>^</button>
+    <button data-matching-id="<%= match.escape('matching_id') %>')"
+            data-matched-id="<%= match.escape('matched_id') %>" class='vote-up'>^</button>
+    <button data-matching-id="<%= match.escape('matching_id') %>"
+            data-matched-id="<%= match.escape('matched_id') %>" class='vote-up'>^</button>
   </div>
 <% }) %>

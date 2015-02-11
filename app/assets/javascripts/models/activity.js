@@ -5,7 +5,11 @@ ActoExplaino.Models.Activity = Backbone.Model.extend({
 
     if (payload.occurrences) {
       this.occurrences().set(payload.occurrences);
-      delete payload.activities
+      delete payload.occurrences
+    }
+    if (payload.matches) {
+      this.matches().set(payload.matches);
+      delete payload.matches
     }
     return payload;
   },
@@ -15,5 +19,12 @@ ActoExplaino.Models.Activity = Backbone.Model.extend({
       this._occurrences = new ActoExplaino.Collections.Occurrences;
     }
     return this._occurrences;
+  },
+
+  matches: function () {
+    if (!this._matches) {
+      this._matches = new ActoExplaino.Collections.Matches({ activity: this });
+    }
+    return this._matches;
   }
 });
