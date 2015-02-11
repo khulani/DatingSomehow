@@ -2,10 +2,8 @@ class Api::VotesController < ApplicationController
   before_action :ensure_logged_in
 
   def create
-    @vote = current_user.votes.find_or_initialize_by(votes_params) do |user|
-      user.value = params[:value]
-    end
-
+    @vote = current_user.votes.find_or_initialize_by(votes_params)
+    @vote.value = params[:value];
     if (@vote.save)
       render json: @vote
     else

@@ -4,6 +4,8 @@ class Api::MatchesController < ApplicationController
     if params[:activity_id]
       @matches = Activity.find(params[:activity_id]).generate_matches
       render :index
+    else
+      # render
     end
   end
 

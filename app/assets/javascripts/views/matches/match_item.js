@@ -6,6 +6,9 @@ ActoExplaino.Views.MatchItem = Backbone.View.extend({
     'click .vote': 'vote'
   },
 
+  initialize: function () {
+  },
+
   vote: function (event) {
     var $voteButton = $(event.currentTarget)
     var matching_id = $voteButton.data('matching-id');
@@ -38,12 +41,12 @@ ActoExplaino.Views.MatchItem = Backbone.View.extend({
 
   render: function () {
     var content = this.template({ match: this.model });
-    if (this.model.get('value') > 0 ) {
-      this.$('vote-up').addClass('voted');
-    } else if (this.model.get('vote_value') < 0){
-      this.$('vote-down').addClass('voted');
-    }
     this.$el.html(content);
+    if (this.model.get('vote_value') > 0 ) {
+      this.$('.vote-up').addClass('voted');
+    } else if (this.model.get('vote_value') < 0){
+      this.$('.vote-down').addClass('voted');
+    }
     return this;
   }
 });

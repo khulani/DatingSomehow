@@ -157,7 +157,6 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     });
     this.$('#match-list').empty();
 
-      // debugger
     this.model.matches().each(function (match) {
         var matchItem = new ActoExplaino.Views.MatchItem({
           model: match
