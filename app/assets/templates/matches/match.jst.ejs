@@ -15,7 +15,7 @@
           data-title="<%= match.escape('matched_title') %>" id="match">
           <%= match.escape('matching_title') %>
         </a><br>
-      <div class='with-match'>  with: </div> <%= match.escape('matched_title') %>
+      <span class='with-match'>  with: </span> <%= match.escape('matched_title') %>
       <% } else { %>
         <a data-id="<%= match.escape('matched_id') %>"
           href="#/activities/<%= match.escape('matched_id') %>"

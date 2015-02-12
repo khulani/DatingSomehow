@@ -31,21 +31,23 @@ class Vote < ActiveRecord::Base
       GROUP BY
         up.matching_id, up.matched_id
       ORDER BY
-        count(up.value) - count(down.value) DESC
+        count(up.value) - count(down.value)
       LIMIT
         7
     SQL
 
     top_votes = []
     votes.each do |vote|
-      top_votes << {
-        matching_id: vote.matching_id,
-        matched_id: vote.matched_id,
-        ups: vote.ups,
-        downs: vote.downs,
-        matching_title: Activity.find(vote.matching_id).title,
-        matched_title: Activity.find(vote.matched_id).title
-      }
+      if vote.matching_id
+        top_votes << {
+          matching_id: vote.matching_id,
+          matched_id: vote.matched_id,
+          ups: vote.ups,
+          downs: vote.downs,
+          matching_title: Activity.find(vote.matching_id).title,
+          matched_title: Activity.find(vote.matched_id).title
+        }
+      end
     end
 
     top_votes

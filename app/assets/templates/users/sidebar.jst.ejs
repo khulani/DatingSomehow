@@ -1,9 +1,27 @@
 <% if (personal) { %>
-  <a class='sidebar' href="#/matches">Top Matches</a> | <b> Activites </b>
+    <ul class="nav nav-tabs">
+      <li role="presentation" class="active">
+        <a class='sidebar' href="#/activities">Activities</a>
+      </li>
+      <li role="presentation">
+        <a class='sidebar' href="#/matches">Top Matches</a>
+      </li>
+    </ul>
 <% } else { %>
   <% if (user.id) { %>
-    <b> Top Matches <b> | <a class='sidebar' href="#/activities">Activities</a>
+    <ul class="nav nav-tabs">
+      <li role="presentation">
+        <a class='sidebar' href="#/activities">Activities</a>
+      </li>
+      <li role="presentation" class="active">
+        <a class='sidebar' href="#/matches">Top Matches</a>
+      </li>
+    </ul>
   <% } else { %>
-  <b> Top Matches <b>
+    <ul class="nav nav-tabs">
+      <li role="presentation" class="active">
+        <a class='sidebar ' href="#/matches">Top Matches</a>
+      </li>
+    </ul>
   <% } %>
 <% } %>

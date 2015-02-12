@@ -14,9 +14,6 @@ ActoExplaino.Collections.Matches = Backbone.Collection.extend({
     if (options) {
       this.activityId = options.activityId;
     }
-  },
-
-  comparator: function () {
-    return this.matching_count / this.matching_total;
   }
+
 });

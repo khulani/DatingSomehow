@@ -15,7 +15,8 @@ class Activity < ActiveRecord::Base
     matches_data = self.class.find_by_sql(<<-SQL)
       SELECT
       two.id id, two.title title,
-      count(DISTINCT one.date) match_count, total
+      count(DISTINCT one.date) match_count, total,
+      (count(DISTINCT one.date) /total) prc
       FROM (
         SELECT
           activities.id, date
@@ -49,9 +50,9 @@ class Activity < ActiveRecord::Base
       GROUP BY
         one.id, two.id, two.title, total
       ORDER BY
-        (count(DISTINCT one.date) / total) DESC
+        (count(DISTINCT one.date) / total)
       LIMIT
-        15
+        10
     SQL
 
     updated_matches = []
@@ -67,6 +68,6 @@ class Activity < ActiveRecord::Base
       updated_matches << match
     end
 
-    updated_matches
+    updated_matches.sort_by { |arr| arr[:matching_count].to_f / arr[:matching_total] }
   end
 end

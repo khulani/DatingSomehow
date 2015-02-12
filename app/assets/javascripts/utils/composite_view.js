@@ -21,6 +21,8 @@ Backbone.CompositeView = Backbone.View.extend({
         $element.prepend(subview.$el);
       }
 
+      var done = false;
+
       var occurrences = this.$('.timeline');
       for (var i = 0; i < occurrences.length; i++) {
         if ($.trim($(occurrences[i]).html()) == '') {
@@ -34,22 +36,23 @@ Backbone.CompositeView = Backbone.View.extend({
               }
             }
           );
-        } else {
+        } else if (!done) {
           var beforeDate = $(occurrences[i]).attr('id');
           if (date > beforeDate) {
             if (!added) {
               $(occurrences[i]).before($element);
               added = true;
             }
-            var height = 20 + (Math.log(new Date(date) - new Date(beforeDate)) - 18)*35;
+            var height = 20 + (Math.log(new Date(date) - new Date(beforeDate)) - 18)*19;
             // $element.css('height', height);
             $element.animate({ 'height': height }, { duration: 300 });
             if (i>0) {
               var afterDate = $(occurrences[i-1]).attr('id');
-              var height = 20 + (Math.log(new Date(afterDate) - new Date(date)) - 18)*35;
+              var height = 20 + (Math.log(new Date(afterDate) - new Date(date)) - 18)*19;
               // $(occurrences[i-1]).css('height', height);
               $(occurrences[i-1]).animate({ 'height': height }, { duration: 300 });
             }
+            done = true;
           }
         }
       }
@@ -59,7 +62,7 @@ Backbone.CompositeView = Backbone.View.extend({
 
         if($before.attr('id')) {
           var afterDate = $before.attr('id');
-          var height = 20 + (Math.log(new Date(afterDate) - new Date(date)) - 18)*35;
+          var height = 20 + (Math.log(new Date(afterDate) - new Date(date)) - 18)*19;
           // $before.css('height', height);
           $before.animate({ 'height': height }, { duration: 300 });
         }
