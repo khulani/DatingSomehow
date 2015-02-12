@@ -27,7 +27,7 @@ Backbone.CompositeView = Backbone.View.extend({
           // $(occurrences[i]).append('should be empty');
           $(occurrences[i]).animate(
             { "height" : "0" },
-            { "complete" : function () {
+            { duration: 300, "complete" : function () {
                 if ($.trim($(occurrences[i]).html()) == '') {
                   $(occurrences[i]).remove();
                 }
@@ -43,14 +43,13 @@ Backbone.CompositeView = Backbone.View.extend({
             }
             var height = 20 + (Math.log(new Date(date) - new Date(beforeDate)) - 18)*35;
             // $element.css('height', height);
-            $element.animate({'height': height});
+            $element.animate({ 'height': height }, { duration: 300 });
             if (i>0) {
               var afterDate = $(occurrences[i-1]).attr('id');
               var height = 20 + (Math.log(new Date(afterDate) - new Date(date)) - 18)*35;
               // $(occurrences[i-1]).css('height', height);
-              $(occurrences[i-1]).animate({'height': height});
+              $(occurrences[i-1]).animate({ 'height': height }, { duration: 300 });
             }
-            break;
           }
         }
       }
@@ -62,10 +61,10 @@ Backbone.CompositeView = Backbone.View.extend({
           var afterDate = $before.attr('id');
           var height = 20 + (Math.log(new Date(afterDate) - new Date(date)) - 18)*35;
           // $before.css('height', height);
-          $before.animate({'height': height});
+          $before.animate({ 'height': height }, { duration: 300 });
         }
         // $element.css('height', 30);
-        $element.animate({'height': 30});
+        $element.animate({ 'height': 30 }, { duration: 300 });
       }
     } else {
       this.$(selector).prepend(subview.$el);
@@ -111,22 +110,25 @@ Backbone.CompositeView = Backbone.View.extend({
   },
 
   removeSubview: function (selector, subview) {
-
     if (selector === '.occurrences') {
       var $parent = subview.$el.parent()
       subview.remove();
 
       if ($.trim($parent.html()) === '') {
-        $parent.animate(
-          { "height" : "0" },
-          { "complete" : function () {
-              if ($.trim($parent.html()) === '') {
-                $parent.remove();
-              }
-            }
-          }
-        );
+        $parent.remove();
       }
+
+      // if ($.trim($parent.html()) === '') {
+      //   $parent.animate(
+      //     { "height" : "0" },
+      //     { duration: 50, "complete" : function () {
+      //         if ($.trim($parent.html()) === '') {
+      //           $parent.remove();
+      //         }
+      //       }
+      //     }
+      //   );
+      // }
     } else {
       subview.remove();
     }

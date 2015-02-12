@@ -17,7 +17,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this.listenTo(this.model.occurrences(), 'add', function (occurrence) {
       that.addOccurrence(occurrence, false);
     });
-    this.listenTo(this.model.occurrences(), 'remove', this.removeOccurrence);
+    this.listenTo(this.model.occurrences(), 'remove', this.deleteOccurrence);
     this.model.occurrences().each(function (occurrence) {
       that.addOccurrence(occurrence, false);
     });
@@ -156,6 +156,11 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this.open = false;
   },
 
+  deleteOccurrence: function (occurrence) {
+    this.removeOccurrence(occurrence);
+    this.model.matches().fetch();
+  },
+
   removeOccurrence: function (occurrence) {
     var occurrenceView = _.find(
       this.subviews('.occurrences'),
@@ -164,13 +169,13 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
       }
     );
     this.removeSubview('.occurrences', occurrenceView);
-    this.model.matches().fetch();
   },
 
   reorderOccurrence: function (occurrence) {
     this.removeOccurrence(occurrence);
     this.open = true;
     this.addOccurrence(occurrence, false);
+    this.model.matches().fetch();
   },
 
   // generates a list of matching timelines
@@ -194,12 +199,12 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
   matchShow: function (event) {
     if (event) {
       event.preventDefault();
+      event.stopPropagation();
     }
-
     // var title = $(event.currentTarget).data('title');
     // var $title = $('<a>');
     var id = $(event.currentTarget).data('id');
-    Backbone.history.navigate('#/activities/' + this.model.id + '/matches/' + id);
+    // Backbone.history.navigate('#/activities/' + this.model.id + '/matches/' + id, {trigger: false});
     // $title.attr('href', '#/activities/' + id);
     // $title.html(title);
     // this.$('#match-title').html($title);
@@ -271,6 +276,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
         $title.attr('href', '#/activities/' + id);
         $title.html(title);
         this.$('#match-title').html($title);
+        this.$('#match-user').html('(' + this.match.get('email') + ')');
       }
 
     return this;
