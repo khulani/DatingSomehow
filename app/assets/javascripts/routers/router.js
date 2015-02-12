@@ -21,13 +21,14 @@ ActoExplaino.Routers.Router = Backbone.Router.extend({
   show: function (id) {
     if (!ActoExplaino.user.id) {
       this._checkIndex(true, this.show.bind(this, id));
+    } else {
+      var activity = ActoExplaino.user.activities().getOrFetch(id);
+      var activityView = new ActoExplaino.Views.ActivityShow({
+        model: activity,
+        user: ActoExplaino.user
+      });
+      this._swapView(activityView);
     }
-    var activity = ActoExplaino.user.activities().getOrFetch(id);
-    var activityView = new ActoExplaino.Views.ActivityShow({
-      model: activity,
-      user: ActoExplaino.user
-    });
-    this._swapView(activityView);
   },
 
   showMatch: function (matching, matched) {

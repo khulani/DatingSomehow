@@ -51,7 +51,7 @@ class Activity < ActiveRecord::Base
       ORDER BY
         (count(DISTINCT one.date) / total)
       LIMIT
-        15
+        11
     SQL
 
     updated_matches = []

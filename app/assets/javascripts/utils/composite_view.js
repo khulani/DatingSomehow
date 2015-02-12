@@ -116,22 +116,29 @@ Backbone.CompositeView = Backbone.View.extend({
     if (selector === '.occurrences') {
       var $parent = subview.$el.parent()
       subview.remove();
-
       if ($.trim($parent.html()) === '') {
-        $parent.remove();
+        var $later = $parent.prev();
+        var $earlier = $parent.next();
+        if ($later.attr('id')) {
+          if ($earlier.attr('id')) {
+            var afterDate = $later.attr('id');
+            var beforeDate =$earlier.attr('id');
+            var height = 20 + (Math.log(new Date(afterDate) - new Date(beforeDate)) - 18)*19;
+            $later.animate({ 'height': height }, { duration: 300 });
+          } else {
+            $later.animate({ 'height': 30 }, { duration: 300 });
+          }
+        }
+        $parent.animate(
+          { "height" : "0" },
+          { duration: 300, "complete" : function () {
+            if ($.trim($parent.html()) == '') {
+              $parent.remove();
+            }
+          }
+        }
+      );;
       }
-
-      // if ($.trim($parent.html()) === '') {
-      //   $parent.animate(
-      //     { "height" : "0" },
-      //     { duration: 50, "complete" : function () {
-      //         if ($.trim($parent.html()) === '') {
-      //           $parent.remove();
-      //         }
-      //       }
-      //     }
-      //   );
-      // }
     } else {
       subview.remove();
     }

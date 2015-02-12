@@ -11,7 +11,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     }
     this.listenTo(this.user, 'change', this.checkUser);
 
-    this.listenTo(this.model, 'sync', this.reload);
+    // this.listenTo(this.model, 'sync', this.reload);
     this.listenTo(this.model, 'destroy', this.remove.bind(this));
     var that = this;
     this.listenTo(this.model.occurrences(), 'add', function (occurrence) {
@@ -62,8 +62,21 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
   },
 
   checkUser: function () {
-    this.model.fetch();
-    this.render();
+    if (this.user.id && !this.editable || this.editable && !this.user.id) {
+      // this.model.fetch();
+      var that = this;
+      this.model.occurrences().each(function (occurrence) {
+        var occurrenceView = _.find(
+          that.subviews('.occurrences'),
+          function (subview) {
+            return subview.model === occurrence;
+          }
+        );
+        occurrenceView.toggleEditable();
+        occurrenceView.render();
+      });
+      this.render();
+    }
   },
 
   reload: function () {
@@ -152,6 +165,9 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
       comparing: comparing,
       open: this.open || this.expanded
     });
+    if (comparing) {
+      this._matchSubs.push(occurrenceView)
+    }
     this.addSubview('.occurrences', occurrenceView);
     this.open = false;
   },
@@ -162,6 +178,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
   },
 
   removeOccurrence: function (occurrence) {
+    debugger;
     var occurrenceView = _.find(
       this.subviews('.occurrences'),
       function (subview) {
@@ -218,7 +235,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     this._matchSubs.forEach(function (matchSub) {
       that.removeSubview('.occurrences', matchSub);
     });
-    this.$('.right-side').remove();
+    // this.$('.right-side').remove();
     this._matchSubs = [];
 
     // if($.trim(this.$('#match-title').html()) == '') {
