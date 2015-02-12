@@ -1,0 +1,9 @@
+<% if (personal) { %>
+  <a class='sidebar' href="#/matches">Top Matches</a> | <b> Activites </b>
+<% } else { %>
+  <% if (user.id) { %>
+    <b> Top Matches <b> | <a class='sidebar' href="#/activities">Activities</a>
+  <% } else { %>
+  <b> Top Matches <b>
+  <% } %>
+<% } %>

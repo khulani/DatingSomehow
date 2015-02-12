@@ -7,17 +7,20 @@ ActoExplaino.Routers.Router = Backbone.Router.extend({
 
   routes: {
     '': 'index',
-    'activities/:id': 'show'
+    'activities': 'activities',
+    'activities/:id': 'show',
+    'activities/:matching/matches/:matched': 'showMatch',
+    'matches': 'matches'
   },
 
   index: function () {
     this._topRender();
-    this._sideRender();
+    this._sideRender(true);
   },
 
   show: function (id) {
     if (!ActoExplaino.user.id) {
-      this._checkIndex(this.show.bind(this, id));
+      this._checkIndex(true, this.show.bind(this, id));
     }
     var activity = ActoExplaino.user.activities().getOrFetch(id);
     var activityView = new ActoExplaino.Views.ActivityShow({
@@ -25,15 +28,36 @@ ActoExplaino.Routers.Router = Backbone.Router.extend({
       user: ActoExplaino.user
     });
     this._swapView(activityView);
-    debugger;
   },
 
-  _checkIndex: function (callback) {
+  showMatch: function (matching, matched) {
+    this._checkIndex();
+    var matchingAct = new ActoExplaino.Models.Activity({ id: matching });
+    matchingAct.fetch();
+    var matchedAct = new ActoExplaino.Models.Activity({ id: matched });
+    matchedAct.fetch();
+    var matchView = new ActoExplaino.Views.ActivityShow({
+      model: matchingAct,
+      match: matchedAct,
+      user: ActoExplaino.user
+    });
+    this._swapView(matchView);
+  },
+
+  activities: function () {
+    this._checkIndex(true);
+  },
+
+  matches: function () {
+    this._checkIndex();
+  },
+
+  _checkIndex: function (personal, callback) {
     if (!this._topView) {
       this._topRender(callback);
     }
     if (!this._sideView) {
-      this._sideRender();
+      this._sideRender(personal);
     }
   },
 
@@ -44,7 +68,7 @@ ActoExplaino.Routers.Router = Backbone.Router.extend({
         if (view) {
           view();
         }
-        that._sideRender();
+        // that._sideRender();
       }
     });
     this._topView && this._topView.remove();
@@ -54,21 +78,38 @@ ActoExplaino.Routers.Router = Backbone.Router.extend({
     this.$login.html(this._topView.render().$el);
   },
 
-  _sideRender: function () {
-    // ActoExplaino.user.fetch();
+  _sideRender: function (personal) {
     this._sideView && this._sideView.remove();
-
-    if (ActoExplaino.user.id) {
-      this._sideView = new ActoExplaino.Views.ActivityIndex({
-        model: ActoExplaino.user
-      });
-    } else {
-      this._sideView = new ActoExplaino.Views.MatchIndex(
-        collection: new ActoExplaino.Collections.Matches();
-      );
+    if (personal && ActoExplaino.user.id) {
+      personal = true;
     }
-    this.$side.html(this._sideView.render().$el);
+    this._sideView = new ActoExplaino.Views.Sidebar({
+      model: ActoExplaino.user,
+      personal: personal
+    });
+    this.$side.append(this._sideView.render().$el);
   },
+
+  // _sideRender: function () {
+  //   if (!this._topView) {
+  //     this._topRender(this._sideRender.bind(this));
+  //   }
+  //   // ActoExplaino.user.fetch();
+  //   this._sideView && this._sideView.remove();
+  //
+  //   if (ActoExplaino.user.id) {
+  //     this._sideView = new ActoExplaino.Views.ActivityIndex({
+  //       model: ActoExplaino.user
+  //     });
+  //   } else {
+  //     var matches = new ActoExplaino.Collections.Matches()
+  //     matches.fetch();
+  //     this._sideView = new ActoExplaino.Views.MatchIndex({
+  //       collection: matches
+  //     });
+  //   }
+  //   this.$side.html(this._sideView.render().$el);
+  // },
 
   _swapView: function (view) {
     this._currentView && this._currentView.remove();

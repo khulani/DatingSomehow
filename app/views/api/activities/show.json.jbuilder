@@ -17,7 +17,7 @@ if @matches.length > 0
       json.matched_title match[:matched_title]
       json.matching_count match[:matching_count]
       json.matching_total match[:matching_total]
-      if (current_user.votes.where(
+      if (current_user && current_user.votes.where(
         matching_id: match[:matching_id],
         matched_id: match[:matched_id]
         ).first)

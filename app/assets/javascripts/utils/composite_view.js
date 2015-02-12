@@ -115,7 +115,7 @@ Backbone.CompositeView = Backbone.View.extend({
     if (selector === '.occurrences') {
       var $parent = subview.$el.parent()
       subview.remove();
-      
+
       if ($.trim($parent.html()) === '') {
         $parent.animate(
           { "height" : "0" },

@@ -33,7 +33,7 @@ class Vote < ActiveRecord::Base
       ORDER BY
         count(up.value) - count(down.value) DESC
       LIMIT
-        10
+        7
     SQL
 
     top_votes = []

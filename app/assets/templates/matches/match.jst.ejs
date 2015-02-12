@@ -1,16 +1,19 @@
+<% if (!top) { %>
   <div class='match-pct'>
     <b>
       <%= (100 * match.escape('matching_count') / match.escape('matching_total')).toFixed(2) %>%:
     </b>
   </div>
+<% } %>
   <div class='panel'>
     <% if (top) { %>
-      <a href=
-        "#/activities/<%= match.escape('matching_id') %>/matched/<%= match.escape('matched_id') %>"
-         id="match">
+      <a data-id="<%= match.escape('matched_id') %>"
+        href=
+        "#/activities/<%= match.escape('matching_id') %>/matches/<%= match.escape('matched_id') %>"
+        data-title="<%= match.escape('matched_title') %>" id="match">
         <%= match.escape('matching_title') %>
       </a>
-      with: <%= match.escape('matching_title') %>
+      with: <%= match.escape('matched_title') %>
     <% } else { %>
       <a data-id="<%= match.escape('matched_id') %>"
         href="#/activities/<%= match.escape('matched_id') %>"
@@ -20,16 +23,16 @@
     <% } %>
   </div>
   <div class='vote-buttons'>
-    <% if (top) { %>
-      <%= match.escape('ups') %>:
-    <% } %>
     <button data-matching-id="<%= match.escape('matching_id') %>"
             data-matched-id="<%= match.escape('matched_id') %>"
             data-value="1" class='vote vote-up'>^</button>
     <% if (top) { %>
-      <%= match.escape('ups') %>:
-      <% } %>
+      : <%= match.escape('ups') %>
+    <% } %>
     <button data-matching-id="<%= match.escape('matching_id') %>"
             data-matched-id="<%= match.escape('matched_id') %>"
             data-value="-1" class='vote vote-down'>v</button>
+    <% if (top) { %>
+      : <%= match.escape('ups') %>
+      <% } %>
   </div>

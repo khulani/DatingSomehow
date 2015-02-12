@@ -3,7 +3,7 @@ ActoExplaino.Views.ActivityIndex = Backbone.CompositeView.extend({
   errTemplate: JST['shared/errors'],
 
   initialize: function () {
-    this.listenTo(this.model, 'sync change', this.render);
+    // this.listenTo(this.model, 'sync change', this.render);
     // this.listenTo(this.model, 'destroy', this.remove)
 
     this.listenTo(this.model.activities(), 'set', this.addActivities);
