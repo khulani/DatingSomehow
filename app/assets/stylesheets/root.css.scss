@@ -1,14 +1,6 @@
 // Place all the styles related to the root controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-.clearfix:after {
-  visibility: hidden;
-  display: block;
-  font-size: 0;
-  content: " ";
-  clear: both;
-  height: 0;
-}
 
 .section {
   float: left;
@@ -264,11 +256,30 @@ button.occurrence.delete {
   color: crimson;
 }
 
-.vote-buttons {
-  margin-bottom: 5px;
-  padding-bottom: 5px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
+.vote-up {
+  width: 15px;
+  height: 15px;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+  border: 0;
+}
+.vote-down {
+  width: 15px;
+  height: 15px;
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+  border: 0;
+}
+
+.vote:hover {
+  box-shadow: 0 1px 6px gold;
+}
+
+.vote-up.voted {
+  background: limegreen;
+}
+.vote-down.voted {
+  background: red;
 }
 
 .with-match {

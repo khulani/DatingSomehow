@@ -26,11 +26,11 @@ ActoExplaino.Views.MatchItem = Backbone.View.extend({
     newVote.save({}, {
       success: function (voted) {
         if (voted.get('value') > 0 ) {
+          that.$('.vote-buttons button').removeClass('voted');
           $voteButton.addClass('voted');
-          $voteButton.next().removeClass('voted');
         } else if (voted.get('value') < 0) {
+          that.$('.vote-buttons button').removeClass('voted');
           $voteButton.addClass('voted');
-          $voteButton.prev().removeClass('voted');
         } else {
           that.$('.vote-buttons button').removeClass('voted');
         }
