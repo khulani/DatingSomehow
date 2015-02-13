@@ -1,26 +1,26 @@
 <% if (personal) { %>
     <ul class="nav nav-tabs">
-      <li role="presentation" class="active">
-        <a class='sidebar activities' href="#/activities">Activities</a>
-      </li>
       <li role="presentation">
-        <a class='sidebar matches' href="#/matches">Top Matches</a>
+        <a class='sidebar matches' href="#/matches">Top Synchronicities</a>
+      </li>
+      <li role="presentation" class="active">
+        <a class='sidebar activities' href="#/activities">Timeline</a>
       </li>
     </ul>
 <% } else { %>
   <% if (user.id) { %>
     <ul class="nav nav-tabs">
-      <li role="presentation">
-        <a class='sidebar activities' href="#/activities">Activities</a>
-      </li>
       <li role="presentation" class="active">
-        <a class='sidebar matches' href="#/matches">Top Matches</a>
+        <a class='sidebar matches' href="#/matches">Top Synchronicities</a>
+      </li>
+      <li role="presentation">
+        <a class='sidebar activities' href="#/activities">Timeline</a>
       </li>
     </ul>
   <% } else { %>
     <ul class="nav nav-tabs">
       <li role="presentation" class="active">
-        <a class='sidebar matches' href="#/matches">Top Matches</a>
+        <a class='sidebar matches' href="#/matches">Top Synchronicities</a>
       </li>
     </ul>
   <% } %>

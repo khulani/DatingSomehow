@@ -7,10 +7,6 @@
   padding: 10px 10px;
 }
 
-.site-name {
-
-}
-
 .matches {
   padding-top: 10px;
 }
@@ -55,7 +51,7 @@ form#new {
   position: relative;
   border: 2px solid gray;
   border-radius: 10px;
-  background: whitesmoke;
+  background: #f8f8f8;
   -moz-user-select: none;
   -khtml-user-select: none;
   -webkit-user-select: none;
@@ -276,7 +272,7 @@ button.occurrence.delete {
 }
 
 .vote:hover {
-  box-shadow: 0 1px 6px gold;
+  box-shadow: 0 1px 6px black;
 }
 
 .vote-up.voted {
@@ -290,6 +286,10 @@ button.occurrence.delete {
   color: crimson;
 }
 
+#open-all {
+  width: 22px;
+  height: 22px;
+}
 
 .center-text {
   text-align: center;

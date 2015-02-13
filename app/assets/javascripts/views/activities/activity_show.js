@@ -74,6 +74,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
       occurrenceView.setEditable(that.editable);
       occurrenceView.render();
     });
+    this.model.matches().fetch();
     this.render();
   },
 
