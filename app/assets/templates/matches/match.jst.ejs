@@ -18,7 +18,7 @@
                 data-matched-id="<%= match.escape('matched_id') %>"
                 data-value="1"
                 class='vote vote-up'></button>
-          : <%= match.escape('ups') %>
+        : <span class='up-count'><%= match.escape('ups') %></span>
       </div>
     </div>
     <div class='col-xm-12'>
@@ -26,7 +26,7 @@
               data-matched-id="<%= match.escape('matched_id') %>"
               data-value="-1"
               class='vote vote-down'></button>
-        : <%= match.escape('downs') %>
+        : <span class='down-count'><%= match.escape('downs') %></span>
     </div>
   </div>
   <% } else { %>

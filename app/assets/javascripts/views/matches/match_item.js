@@ -28,12 +28,44 @@ ActoExplaino.Views.MatchItem = Backbone.View.extend({
         if (voted.get('value') > 0 ) {
           that.$('.vote-buttons button').removeClass('voted');
           $voteButton.addClass('voted');
+
+          var $ups = that.$('.up-count');
+          var upCount = parseInt($ups.html());
+          $ups.html(upCount + 1);
+
+          if (that.model.get('vote_value') < 0) {
+            var $downs = that.$('.down-count');
+            var downCount = parseInt($downs.html());
+            $downs.html(downCount - 1);
+          }
+
         } else if (voted.get('value') < 0) {
           that.$('.vote-buttons button').removeClass('voted');
           $voteButton.addClass('voted');
+
+          var $downs = that.$('.down-count');
+          var downCount = parseInt($downs.html());
+          $downs.html(downCount + 1);
+
+          if (that.model.get('vote_value') > 0) {
+            var $ups = that.$('.up-count');
+            var upCount = parseInt($ups.html());
+            $ups.html(upCount - 1);
+          }
+
         } else {
           that.$('.vote-buttons button').removeClass('voted');
+          if (that.model.get('vote_value') < 0) {
+            var $downs = that.$('.down-count');
+            var downCount = parseInt($downs.html());
+            $downs.html(downCount - 1);
+          } else if (that.model.get('vote_value') > 0) {
+            var $ups = that.$('.up-count');
+            var upCount = parseInt($ups.html());
+            $ups.html(upCount - 1);
+          }
         }
+        that.model.set('vote_value', voted.get('value'));
       }
     });
   },
