@@ -62,26 +62,35 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
   },
 
   checkUser: function () {
-    if (this.user.id && !this.editable || this.editable && !this.user.id) {
-      // this.model.fetch();
-      var that = this;
-      this.model.occurrences().each(function (occurrence) {
-        var occurrenceView = _.find(
-          that.subviews('.occurrences'),
-          function (subview) {
-            return subview.model === occurrence;
-          }
-        );
-        occurrenceView.toggleEditable();
-        occurrenceView.render();
-      });
-      this.render();
-    }
+    var that = this;
+    this.editable = (this.user.id === this.model.get('user_id'));
+    this.model.occurrences().each(function (occurrence) {
+      var occurrenceView = _.find(
+        that.subviews('.occurrences'),
+        function (subview) {
+          return subview.model === occurrence;
+        }
+      );
+      occurrenceView.setEditable(that.editable);
+      occurrenceView.render();
+    });
+    this.render();
   },
 
   reload: function () {
-    this.$('#show-title').html(this.model.get('title'));
-    this.$('#show-user').html('(' + this.model.get('email') + ')');
+    var that = this;
+    this.editable = (this.user.id === this.model.get('user_id'));
+    this.model.occurrences().each(function (occurrence) {
+      var occurrenceView = _.find(
+        that.subviews('.occurrences'),
+        function (subview) {
+          return subview.model === occurrence;
+        }
+      );
+      occurrenceView.setEditable(that.editable);
+      occurrenceView.render();
+    });
+    this.render();
   },
 
   remove: function () {
@@ -153,7 +162,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
 
   addOccurrence: function (occurrence, comparing) {
     var that = this;
-    if (this.subviews('.occurrences').length === 0) {
+    if (this._timelinePlaceholder && this.subviews('.occurrences').length === 0) {
       this._timelinePlaceholder.empty();
       this._timelinePlaceholder.animate(
         { "height" : "0" },
@@ -165,6 +174,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
         }
       );
     }
+
 
     this.listenTo(occurrence, 'change:date', this.reorderOccurrence);
     var occurrenceView = new ActoExplaino.Views.Occurrence({
@@ -295,6 +305,11 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     var $timeWindow = this.$('.timeline-window');
     $timeWindow.css('height', this._timelineWindow);
     $timeWindow.on('mousewheel', this.scrollWheel.bind(this));
+
+    if (this.model.get('title')) {
+      this.$('#show-title').html(this.model.get('title'));
+      this.$('#show-user').html('(' + this.model.get('email') + ')');
+    }
 
     var that = this;
     var date = new Date;

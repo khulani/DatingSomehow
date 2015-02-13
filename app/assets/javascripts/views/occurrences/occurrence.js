@@ -26,12 +26,8 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
     'click #cancel': 'cancel'
   },
 
-  toggleEditable: function () {
-    if (this.editable) {
-      this.editable = false;
-    } else {
-      this.editable = true;
-    }
+  setEditable: function (editable) {
+    this.editable = editable;
   },
 
   setHeight: function (height) {

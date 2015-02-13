@@ -8,7 +8,8 @@ ActoExplaino.Views.Sidebar = Backbone.View.extend({
   },
 
   events: {
-    'click a.sidebar': 'updateSidebar'
+    'click a.sidebar.activities': 'sidebarActivities',
+    'click a.sidebar.matches': 'sidebarMatches'
   },
 
   checkUser: function () {
@@ -18,15 +19,22 @@ ActoExplaino.Views.Sidebar = Backbone.View.extend({
     this.render();
   },
 
-  updateSidebar: function () {
+  sidebarActivities: function (event) {
+    event.preventDefault();
+    if (!this.personal) {
+      this.personal = true;
+      Backbone.history.navigate('#/activities')
+      this.render();
+    }
+  },
+
+  sidebarMatches: function (event) {
+    event.preventDefault();
     if (this.personal) {
       this.personal = false;
-      Backbone.history.navigate('/#/matches')
-    } else {
-      this.personal = true;
-      Backbone.history.navigate('/#/activities')
+      Backbone.history.navigate('#/matches')
+      this.render();
     }
-    this.render();
   },
 
   render: function () {
