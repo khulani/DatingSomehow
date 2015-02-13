@@ -1,7 +1,10 @@
 <div id='activity-show' class='col-xs-9'>
   <div class='row'>
     <div class='col-xs-6 title'>
-      <div ><h3 id='show-title'><%= activity.escape('title') %></h3></div>
+      <div>
+        <h3 id='show-title'><%= activity.escape('title') %></h3>
+        <div id='show-user'></div>
+      </div>
     </div>
     <div class='col-xs-6 title'>
       <div >
@@ -39,7 +42,7 @@
       <div class='timeline-bar'>
         <div class='timeline-top'></div>
         <div class='occurrences'>
-          
+
         </div>
         <div class='timeline-bot'></div>
       </div>

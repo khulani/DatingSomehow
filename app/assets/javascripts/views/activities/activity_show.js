@@ -81,6 +81,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
 
   reload: function () {
     this.$('#show-title').html(this.model.get('title'));
+    this.$('#show-user').html('(' + this.model.get('email') + ')');
   },
 
   remove: function () {
