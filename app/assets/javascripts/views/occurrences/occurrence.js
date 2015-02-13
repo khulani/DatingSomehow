@@ -132,16 +132,14 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
       this.$el.addClass('left-side')
     }
 
-    if (this.comparing) {
-    } else {
-    }
-
     this.$el.html(content);
 
     if (this.open) {
       this.$('.occurrence').removeClass('closed');
       this.$('.open').addClass('pressed');
     }
+
+    this.editing = false;
 
     return this;
   },
