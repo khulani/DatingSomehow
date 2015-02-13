@@ -144,6 +144,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
     occurrence.save({}, {
       success: function () {
         that.open = true;
+        $('#add')[0].reset();
         that.$('.errors').empty();
 
         that.model.occurrences().add(occurrence);
