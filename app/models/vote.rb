@@ -11,29 +11,16 @@ class Vote < ActiveRecord::Base
 
     votes = Vote.find_by_sql(<<-SQL)
       SELECT
-        up.matching_id, up.matched_id, count(DISTINCT up.user_id) ups, count(DISTINCT down.user_id) downs
-      FROM (
-        SELECT
-          matching_id, matched_id, user_id
-        FROM
-          votes
-        WHERE
-          value = 1
-      ) up
-      FULL OUTER JOIN (
-        SELECT
-          matching_id, matched_id, user_id
-        FROM
-          votes
-        WHERE
-          value = -1
-      ) down ON up.matching_id = down.matching_id AND up.matched_id = down.matched_id
+        matching_id, matched_id, sum(case when value = 1 then 1 else 0 end) ups,
+        sum(case when value = -1 then 1 else 0 end) downs
+      FROM
+        votes
       GROUP BY
-        up.matching_id, up.matched_id
+        matching_id, matched_id
       ORDER BY
-        count(DISTINCT up.user_id) - count(DISTINCT down.user_id)
+        sum(case when value = 1 then 1 else 0 end) - sum(case when value = -1 then 1 else 0 end)
       LIMIT
-        11
+        12
     SQL
 
     top_votes = []
