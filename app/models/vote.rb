@@ -11,10 +11,10 @@ class Vote < ActiveRecord::Base
 
     votes = Vote.find_by_sql(<<-SQL)
       SELECT
-        up.matching_id, up.matched_id, count(up.value) ups, count(down.value) downs
+        up.matching_id, up.matched_id, count(DISTINCT up.user_id) ups, count(DISTINCT down.user_id) downs
       FROM (
         SELECT
-          matching_id, matched_id, value
+          matching_id, matched_id, user_id
         FROM
           votes
         WHERE
@@ -22,7 +22,7 @@ class Vote < ActiveRecord::Base
       ) up
       FULL OUTER JOIN (
         SELECT
-          matching_id, matched_id, value
+          matching_id, matched_id, user_id
         FROM
           votes
         WHERE
@@ -31,7 +31,7 @@ class Vote < ActiveRecord::Base
       GROUP BY
         up.matching_id, up.matched_id
       ORDER BY
-        count(up.value) - count(down.value)
+        count(DISTINCT up.user_id) - count(DISTINCT down.user_id)
       LIMIT
         11
     SQL
