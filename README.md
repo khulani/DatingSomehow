@@ -1,13 +1,12 @@
-# Acto-Explainoz
+# Somehow We're dating
 
 [Heroku link][heroku]
 
-[heroku]: #
+[heroku]: http://www.somehowdating.com
 
 ## Minimum Viable Product
-Acto-Explaino is a web app built on Rails and Backbone.
-Users can log a series of activity occurrences and find ‘possible’ explanations
-or causes for those activities...
+"Somehow We're Dating" is a web app built on Rails and Backbone.
+Users can create timeline journals for tracking a reoccurring event as well as find other timelines that coincidentally line up with theirs.
 
 For example, say you track every occurrence of your favorite jacket going missing and you find that it has a 92% match to the activity timeline from some random girl named Suzy for every time she goes on a date. So according to Acto Explainoz, the reason for favorite jacket going missing is because Suzy is on a date. So what does Suzy have anything to do with your favorite jacket being missing? Maybe if you checked out her timeline occurrence entries, you'll find a picture of her and your roommate wearing your favorite jacket :)
 
