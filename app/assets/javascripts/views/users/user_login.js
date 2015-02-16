@@ -10,6 +10,7 @@ ActoExplaino.Views.UserLogin = Backbone.View.extend({
 
   events: {
     'submit #signin': 'signIn',
+    'click button#guest': 'guestIn',
     'click #signout': 'signOut',
     // 'click #sign-up-button': 'signUp',
     'submit form#signup': 'createUser'
@@ -46,6 +47,24 @@ ActoExplaino.Views.UserLogin = Backbone.View.extend({
       url: 'api/session',
       type: 'POST',
       data: loginData,
+      success: function (user) {
+        that.model.set(user);
+        that.model.activities().set(user.activities);
+      },
+      error: function (errors) {
+        that.renderErrors(errors.responseJSON['errors'], '.in-errors');
+      }
+    });
+  },
+
+  guestIn: function (event) {
+    var that = this;
+    event.preventDefault();
+    var loginData = $(event.target).serializeJSON();
+    $.ajax({
+      url: 'api/session',
+      type: 'POST',
+      data: { 'email': 'demo@demo.com', 'password': 'password' },
       success: function (user) {
         that.model.set(user);
         that.model.activities().set(user.activities);
