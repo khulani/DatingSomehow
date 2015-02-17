@@ -374,16 +374,30 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
       this._scrolled = true;
       this.toggleAddForm();
     }
-    this._scroll = -((40 - event.offsetY) * 0.75);
+
+    var offset = 0;
+    if (event.offsetY === undefined) {
+      offset = event.pageY-$(event.currentTarget).offset().top;
+    } else {
+      offset = event.offsetY;
+    }
+    this._scroll = -((40 - offset) * 0.75);
   },
 
   scrollDown: function (event) {
     if (this._form) {
       this._scrolled = true;
       this.toggleAddForm();
-
     }
-    this._scroll = event.offsetY * 0.75;
+
+
+    var offset = 0;
+    if (event.offsetY === undefined) {
+      offset = event.pageY-$(event.currentTarget).offset().top;
+    } else {
+      offset = event.offsetY;
+    }
+    this._scroll = offset * 0.75;
   },
 
   checkScroll: function (delta) {

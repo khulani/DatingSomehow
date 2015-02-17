@@ -16,7 +16,7 @@ ActoExplaino.Views.UserLogin = Backbone.View.extend({
     'submit form#signup': 'createUser'
   },
 
-  createUser: function () {
+  createUser: function (event) {
     var that = this;
     event.preventDefault();
     var formData = $(event.target).serializeJSON();
