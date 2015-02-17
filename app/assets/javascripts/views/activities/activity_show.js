@@ -377,7 +377,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
 
     var offset = 0;
     if (event.offsetY === undefined) {
-      offset = event.pageY-$(event.currentTarget).offset().top;
+      offset = event.pageY - $(event.currentTarget).offset().top;
     } else {
       offset = event.offsetY;
     }
@@ -393,7 +393,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
 
     var offset = 0;
     if (event.offsetY === undefined) {
-      offset = event.pageY-$(event.currentTarget).offset().top;
+      offset = event.pageY - $(event.currentTarget).offset().top;
     } else {
       offset = event.offsetY;
     }
@@ -439,6 +439,13 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
       this._scrolled = false;
     }
 
+    var offset = 0;
+    if (event.offsetY === undefined) {
+      offset = event.pageY - $(event.currentTarget).offset().top;
+    } else {
+      offset = event.offsetY;
+    }
+
     if ($(event.target).attr('id')) {
       $timeline = $(event.target)
     } else if ($(event.target.parentElement).attr('id')) {
@@ -454,7 +461,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
       dateLow = dateHigh;
     }
     var height = parseFloat($timeline.css('height'));
-    var pct = event.offsetY / height;
+    var pct = offset / height;
     var days = Math.floor(pct * (dateHigh - dateLow) / (3600 * 24 * 1000));
     dateHigh.setDate(dateHigh.getDate() - days + 1);
     var dateStr = dateHigh.getFullYear() + '-' + this.padStr(dateHigh.getMonth() + 1)
@@ -465,8 +472,10 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
 
   scrollWheel: function (event) {
     event.preventDefault();
-    this._timelineShift -= event.deltaY;
-    this.checkScroll(-event.deltaY);
+    console.log(event.deltaX, event.deltaY, event.deltaFactor);
+    var offset = event.deltaY > 0 ? 20 : -20;
+    this._timelineShift -= offset;
+    this.checkScroll(-offset);
     this.$('.timeline-bar').css('bottom', this._timelineShift);
   }
 })
