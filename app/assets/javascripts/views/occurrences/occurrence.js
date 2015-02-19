@@ -127,16 +127,12 @@ ActoExplaino.Views.Occurrence = Backbone.View.extend({
     if (this.comparing) {
       content = this.template({ occurrence: this.model });
       this.$el.addClass('right-side');
-      console.log(content);
     } else {
       content = this.templateEdit({ occurrence: this.model, editable: this.editable });
       this.$el.addClass('left-side');
-      console.log(content);
     }
 
-    this.$el.empty();
-
-    this.$el.append(content);
+    this.$el.html(content);
 
     if (this.open) {
       this.$('.occurrence').removeClass('closed');
