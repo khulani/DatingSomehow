@@ -6,7 +6,8 @@ class Activity < ActiveRecord::Base
 
   has_many :occurrences, dependent: :destroy
 
-  # has_many :votes, dependent: :destroy
+  has_many :matching_votes, class_name: :Vote, foreign_key: :matching_id, dependent: :destroy
+  has_many :matched_votes, class_name: :Vote, foreign_key: :matched_id, dependent: :destroy
 
   def generate_matches
     # Occurrence.where(
