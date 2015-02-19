@@ -15,8 +15,6 @@ ActoExplaino.Views.Sidebar = Backbone.View.extend({
   checkUser: function () {
     if (this.personal && !this.model.id) {
       this.personal = false;
-    } else {
-      this.personal = true;
     }
     this.render();
   },
