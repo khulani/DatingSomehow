@@ -165,9 +165,13 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
   addOccurrence: function (occurrence, comparing) {
     var that = this;
     if (this._timelinePlaceholder && this.subviews('.occurrences').length === 0) {
-      this._timelinePlaceholder.empty();
+      // this._timelinePlaceholder.empty();
+      var height = '0';
+      if (occurrence.get('date') === this._timelinePlaceholder.attr('id')) {
+        height = '30';
+      }
       this._timelinePlaceholder.animate(
-        { "height" : "0" },
+        { "height" : height },
         { duration: 300, "complete" : function () {
             if ($.trim(that._timelinePlaceholder.html()) == '') {
               that._timelinePlaceholder.remove();
