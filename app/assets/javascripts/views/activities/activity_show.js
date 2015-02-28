@@ -222,7 +222,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
         { duration: 300, "complete": function () {
             that.$('.occurrences').append(that._timelinePlaceholder);
             that._timelinePlaceholder.removeClass('center-text');
-            that._timelinePlaceholder.empty();
+            that._timelinePlaceholder.html(that._dateLine);
           }
         }
       );
@@ -329,6 +329,14 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
       { "height" : that._timelineWindow / 3 },
       { duration: 300 }
     );
+
+    this._dateLine = $('<div>');
+    this._dateLine.addClass('date-line');
+    var $dateLabel = $('<div>');
+    $dateLabel.addClass('date-label');
+    $dateLabel.html(dateStr);
+    this._dateLine.html($dateLabel);
+    this._timelinePlaceholder.html(this._dateLine);
 
     if (!this.editable) {
       this.$('#add-new').prop('disabled', true);
