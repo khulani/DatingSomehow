@@ -17,7 +17,13 @@
         <button data-matching-id="<%= match.escape('matching_id') %>"
                 data-matched-id="<%= match.escape('matched_id') %>"
                 data-value="1"
-                class='vote vote-up'></button>
+                class='vote vote-up'
+                <% if (user && user.id) { %>
+                  title='Toggle Up Vote'
+                <% } else { %>
+                  title='Sign In To Vote'
+                <% } %>
+                ></button>
         : <span class='up-count'><%= match.escape('ups') %></span>
       </div>
     </div>
@@ -25,7 +31,13 @@
       <button data-matching-id="<%= match.escape('matching_id') %>"
               data-matched-id="<%= match.escape('matched_id') %>"
               data-value="-1"
-              class='vote vote-down'></button>
+              class='vote vote-down'
+              <% if (user && user.id) { %>
+                title='Toggle Down Vote'
+              <% } else { %>
+                title='Sign In To Vote'
+              <% } %>
+              ></button>
         : <span class='down-count'><%= match.escape('downs') %></span>
     </div>
   </div>
@@ -36,14 +48,26 @@
           <button data-matching-id="<%= match.escape('matching_id') %>"
             data-matched-id="<%= match.escape('matched_id') %>"
             data-value="1"
-            class='vote vote-up'></button>
+            class='vote vote-up'
+            <% if (user && user.id) { %>
+              title='Toggle Up Vote'
+            <% } else { %>
+              title='Sign In To Vote'
+            <% } %>
+            ></button>
         </div>
       </div>
       <div class='col-xm-12'>
         <button data-matching-id="<%= match.escape('matching_id') %>"
           data-matched-id="<%= match.escape('matched_id') %>"
           data-value="-1"
-          class='vote vote-down'></button>
+          class='vote vote-down'
+          <% if (user && user.id) { %>
+            title='Toggle Down Vote'
+          <% } else { %>
+            title='Sign In To Vote'
+          <% } %>
+          ></button>
       </div>
     </div>
     <div class='match-links col-xs-10'>

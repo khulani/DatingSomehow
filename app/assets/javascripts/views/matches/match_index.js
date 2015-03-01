@@ -4,6 +4,7 @@ ActoExplaino.Views.MatchIndex = Backbone.CompositeView.extend({
   initialize: function (options) {
     this.listenTo(this.collection, 'sync', this.updateSubs);
     this.collection.each(this.addMatchItem.bind(this));
+    this.user = options.user;
   },
 
   updateSubs: function () {
@@ -11,7 +12,7 @@ ActoExplaino.Views.MatchIndex = Backbone.CompositeView.extend({
   },
 
   addMatchItem: function (match) {
-    var matchItem = new ActoExplaino.Views.MatchItem({ model: match, top: true });
+    var matchItem = new ActoExplaino.Views.MatchItem({ model: match, top: true, user: this.user });
     this.addSubview('.matches', matchItem);
   },
 

@@ -51,7 +51,8 @@ ActoExplaino.Views.Sidebar = Backbone.View.extend({
       var matches = new ActoExplaino.Collections.Matches()
       matches.fetch();
       this._sideView = new ActoExplaino.Views.MatchIndex({
-        collection: matches
+        collection: matches,
+        user: ActoExplaino.user
       });
     }
     this.$el.append(this._sideView.render().$el);

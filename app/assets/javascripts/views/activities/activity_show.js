@@ -247,7 +247,8 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
 
     this.model.matches().each(function (match) {
         var matchItem = new ActoExplaino.Views.MatchItem({
-          model: match
+          model: match,
+          user: that.user
         });
         that.addSubview('#match-list', matchItem);
     });
@@ -304,7 +305,7 @@ ActoExplaino.Views.ActivityShow = Backbone.CompositeView.extend({
       this.editable = false;
     }
 
-    var content = this.template({ activity: this.model });
+    var content = this.template({ activity: this.model, user: this.user, editable: this.editable });
     this.$el.html(content);
     this.$el.addClass('row');
     // this.$('#match-title').empty();

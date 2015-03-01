@@ -2,7 +2,11 @@
   <div class='date-label'><%= occurrence.escape('date') %></div>
 </div>
 <button class='open left'></button>
-<div class='occurrence details left closed triangle-border'>
+<div class='occurrence details left closed triangle-border'
+  <% if (editable) { %>
+     title='Double-Click to Edit'
+  <% } %> 
+  >
   <div class='edit-form'>
     <div class='occurrence date'>
       <%= occurrence.escape('date') %>

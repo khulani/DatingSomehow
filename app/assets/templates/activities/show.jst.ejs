@@ -33,7 +33,19 @@
     <div class="timeline-window-inner">
       <div class='timeline-buttons'>
         <button class='btn btn-info btn-xs' id='open-all'>+</button>
-        <button class='btn btn-success btn-xs' id='add-new'>NEW</button>
+        <% if (editable) { %>
+          <button class='btn btn-success btn-xs' id='add-new'
+                  title='Add a New Occurrence'>NEW</button>
+        <% } else if (user.id) { %> 
+          <span title='For Your Timeline Only'>
+            <button class='btn btn-success btn-xs' id='add-new'>NEW</button>
+          </span>
+        <% } else { %>
+          <span title='Log In to Add to Your Timelines'>
+            <button class='btn btn-success btn-xs' id='add-new'>NEW</button>
+          </span>
+        <% } %>
+                
       </div>
       <div class='timeline-bar'>
         <div class='timeline-top'></div>

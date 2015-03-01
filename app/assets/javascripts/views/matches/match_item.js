@@ -7,7 +7,8 @@ ActoExplaino.Views.MatchItem = Backbone.View.extend({
   },
 
   initialize: function (options) {
-    this.top = options.top
+    this.top = options.top;
+    this.user = options.user;
   },
 
   vote: function (event) {
@@ -76,7 +77,7 @@ ActoExplaino.Views.MatchItem = Backbone.View.extend({
   },
 
   render: function () {
-    var content = this.template({ match: this.model, top: this.top });
+    var content = this.template({ match: this.model, top: this.top, user: this.user });
     this.$el.html(content);
     if (this.model.get('vote_value') > 0 ) {
       this.$('.vote-up').addClass('voted');
