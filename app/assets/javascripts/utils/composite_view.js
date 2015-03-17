@@ -2,12 +2,13 @@ Backbone.CompositeView = Backbone.View.extend({
   addSubview: function (selector, subview) {
     this.subviews(selector).push(subview);
     // Try to attach the subview. Render it as a convenience.
-    this.attachSubview(selector, subview.render());
+    this.attachSubview(selector, subview);
 
   },
 
   attachSubview: function (selector, subview, callback) {
     // for sorting occurrences
+    subview.render();
     if (selector === '.occurrences') {
       var date = subview.model.get('date');
       var $element = $('<div class="timeline" id="' + date + '">');
